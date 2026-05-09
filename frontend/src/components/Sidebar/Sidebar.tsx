@@ -8,10 +8,10 @@ const Sidebar: React.FC = () => {
   const currentPath = window.location.pathname;
 
   const menuItems = [
-    { label: 'Monitoreo en Vivo', path: '/dashboard', active: true },
-    { label: 'Geo-cercas', path: '/geofencing', active: false },
-    { label: 'Historial de Rutas', path: '/history', active: false },
-    { label: 'Gestión de Incidentes', path: '/incidents', active: false },
+    { label: 'Monitoreo en Vivo', path: '/dashboard' },
+    { label: 'Geo-cercas', path: '/geofencing' },
+    { label: 'Historial de Rutas', path: '/history' },
+    { label: 'Gestión de Incidentes', path: '/incidents' },
   ];
 
   const handleLogout = () => {
@@ -34,7 +34,7 @@ const Sidebar: React.FC = () => {
         {menuItems.map((item) => (
           <button
             key={item.label}
-            className={`nav-button ${currentPath === item.path || item.active ? 'active' : ''}`}
+            className={`nav-button ${currentPath === item.path ? 'active' : ''}`}
             onClick={() => router.push(item.path, 'forward', 'push')}
           >
             {item.label}

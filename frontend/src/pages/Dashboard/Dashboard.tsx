@@ -3,7 +3,8 @@ import { IonContent, IonPage } from '@ionic/react';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import MapMarker, { MarkerType } from '../../components/MapMarker/MapMarker';
 import AlertsPanel from '../../components/AlertsPanel/AlertsPanel';
-import UnifiedModal, { AlertType } from '../../components/Modals/UnifiedModal';
+import UnifiedModal from '../../components/Modals/UnifiedModal';
+import MapViewport from '../../components/GeoFencing/MapViewport';
 import { NotificationData } from '../../components/AlertsPanel/NotificationItem';
 import './Dashboard.scss';
 
@@ -12,12 +13,12 @@ const Dashboard: React.FC = () => {
   const [selectedAlert, setSelectedAlert] = useState<any>(null);
 
   const markers = [
-    { id: 6, type: 'normal' as MarkerType, top: '100px', left: '250px' },
-    { id: 3, type: 'normal' as MarkerType, top: '500px', left: '450px' },
-    { id: 2, type: 'emergency' as MarkerType, top: '900px', left: '100px' },
-    { id: 4, type: 'normal' as MarkerType, top: '880px', left: '850px' },
-    { id: 5, type: 'alert' as MarkerType, top: '1200px', left: '1300px' },
-    { id: 1, type: 'emergency' as MarkerType, top: '700px', left: '1000px' },
+    { id: 6, type: 'normal' as MarkerType, top: '481px', left: '494px' },
+    { id: 4, type: 'normal' as MarkerType, top: '1348px', left: '1363px' },
+    { id: 1, type: 'emergency' as MarkerType, top: '1365px', left: '558px' },
+    { id: 3, type: 'normal' as MarkerType, top: '904px', left: '796px' },
+    { id: 5, type: 'alert' as MarkerType, top: '1663px', left: '1824px' },
+    { id: 2, type: 'emergency' as MarkerType, top: '32px', left: '1082px' },
   ];
 
   const notifications: NotificationData[] = [
@@ -125,23 +126,25 @@ const Dashboard: React.FC = () => {
           <Sidebar />
           
           <main className="map-view">
-            <div className="map-container">
-              <img 
-                src="/assets/mapa_santodomingo.png" 
-                alt="Mapa Santo Domingo" 
-                className="base-map" 
+            <div className="map-viewport-wrapper">
+              <MapViewport 
+                imageSrc="/assets/mapa_santodomingo.png" 
+                isDrawingMode={false}
+                markers={
+                  <>
+                    {markers.map((m) => (
+                      <MapMarker 
+                        key={m.id}
+                        id={m.id}
+                        type={m.type}
+                        top={m.top}
+                        left={m.left}
+                        onClick={() => handleNotificationClick(notifications.find(n => n.id === `p${m.id === 1 ? 1 : 2}`) || notifications[0])}
+                      />
+                    ))}
+                  </>
+                }
               />
-              
-              {markers.map((m) => (
-                <MapMarker 
-                  key={m.id}
-                  id={m.id}
-                  type={m.type}
-                  top={m.top}
-                  left={m.left}
-                  onClick={() => handleNotificationClick(notifications.find(n => n.id === `p${m.id === 2 ? 1 : 2}`) || notifications[0])}
-                />
-              ))}
             </div>
 
             <AlertsPanel 
