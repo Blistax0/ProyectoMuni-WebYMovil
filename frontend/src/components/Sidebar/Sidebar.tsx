@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IonIcon, useIonRouter } from '@ionic/react';
 import { personOutline, logOutOutline } from 'ionicons/icons';
+import UserProfileModal from '../Modals/UserProfileModal';
 import './Sidebar.scss';
 
 const Sidebar: React.FC = () => {
   const router = useIonRouter();
   const currentPath = window.location.pathname;
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const menuItems = [
     { label: 'Monitoreo en Vivo', path: '/dashboard' },
@@ -43,7 +45,10 @@ const Sidebar: React.FC = () => {
       </nav>
 
       <div className="sidebar-footer">
-        <button className="footer-button profile">
+        <button 
+          className="footer-button profile"
+          onClick={() => setIsProfileOpen(true)}
+        >
           <IonIcon icon={personOutline} />
           Perfil de Usuario
         </button>
@@ -52,6 +57,11 @@ const Sidebar: React.FC = () => {
           Cerrar Sesión
         </button>
       </div>
+
+      <UserProfileModal 
+        isOpen={isProfileOpen} 
+        onClose={() => setIsProfileOpen(false)} 
+      />
     </div>
   );
 };
