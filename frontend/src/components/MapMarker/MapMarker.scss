@@ -52,6 +52,18 @@
     background-color: rgba(255, 213, 108, 0.33);
     border-color: #e69d00;
   }
+
+  &.selectable {
+    background-color: rgba(76, 183, 255, 0.25);
+    border-color: rgba(76, 183, 255, 0.5);
+  }
+
+  &.active {
+    background-color: rgba(233, 136, 0, 0.3);
+    border-color: #e98800;
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(233, 136, 0, 0.3);
+  }
 }
 
 @keyframes pulse-red {

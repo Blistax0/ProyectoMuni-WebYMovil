@@ -39,6 +39,8 @@ import Register from './pages/Register/Register';
 import ResetPassword from './pages/ResetPassword/ResetPassword';
 import Dashboard from './pages/Dashboard/Dashboard';
 import GeoFencingPage from './pages/GeoFencing/GeoFencingPage';
+import RouteHistoryPage from './pages/RouteHistory/RouteHistoryPage';
+import IncidentManagementPage from './pages/IncidentManagement/IncidentManagementPage';
 
 setupIonicReact();
 
@@ -60,6 +62,12 @@ const App: React.FC = () => (
         </Route>
         <Route exact path="/geofencing">
           <GeoFencingPage />
+        </Route>
+        <Route exact path="/history">
+          <RouteHistoryPage />
+        </Route>
+        <Route exact path="/incidents">
+          <IncidentManagementPage />
         </Route>
         <Route exact path="/home">
           <Home />

@@ -3,7 +3,7 @@ import { IonIcon } from '@ionic/react';
 import { carOutline } from 'ionicons/icons';
 import './MapMarker.scss';
 
-export type MarkerType = 'normal' | 'emergency' | 'alert';
+export type MarkerType = 'normal' | 'emergency' | 'alert' | 'selectable' | 'active';
 
 interface MapMarkerProps {
   id: string | number;
@@ -11,12 +11,13 @@ interface MapMarkerProps {
   top: string | number;
   left: string | number;
   onClick?: () => void;
+  className?: string;
 }
 
-const MapMarker: React.FC<MapMarkerProps> = ({ id, type, top, left, onClick }) => {
+const MapMarker: React.FC<MapMarkerProps> = ({ id, type, top, left, onClick, className }) => {
   return (
     <div 
-      className={`map-marker-container ${type}`} 
+      className={`map-marker-container ${type} ${className || ''}`} 
       style={{ top, left }}
       onClick={onClick}
     >

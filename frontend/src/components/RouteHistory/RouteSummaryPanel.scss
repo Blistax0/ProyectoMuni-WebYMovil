@@ -1,0 +1,115 @@
+.route-summary-panel {
+  width: 323px;
+  height: 417px;
+  position: absolute;
+  right: 20px;
+  top: 200px;
+  z-index: 100;
+  animation: slide-in-right 0.3s ease-out;
+
+  .panel-container {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    height: 100%;
+    padding: 23px 12px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+
+    .panel-header {
+      display: flex;
+      justify-content: center;
+      position: relative;
+      margin-bottom: 20px;
+
+      .title-group {
+        text-align: center;
+        
+        .panel-title {
+          font-family: 'Inter', sans-serif;
+          font-weight: 700;
+          font-size: 20px;
+          color: #000;
+          margin: 0;
+        }
+
+        .patrol-subtitle {
+          font-family: 'Inter', sans-serif;
+          font-weight: 700;
+          font-size: 16px;
+          color: #e98800; // Naranja para resaltar la patrulla seleccionada
+          margin: 4px 0 0 0;
+        }
+      }
+
+      .close-btn {
+        position: absolute;
+        right: 0;
+        top: 0;
+        background: none;
+        border: none;
+        font-size: 24px;
+        color: #333;
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+          color: #ff0000;
+        }
+      }
+    }
+
+    .info-sections {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      .info-block {
+        .block-header {
+          background-color: #448cc7;
+          height: 32px;
+          border-radius: 5px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 8px;
+
+          h3 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            color: #ffffff;
+            margin: 0;
+          }
+        }
+
+        .block-content {
+          padding-left: 10px;
+          
+          p {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #000;
+            margin: 4px 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
