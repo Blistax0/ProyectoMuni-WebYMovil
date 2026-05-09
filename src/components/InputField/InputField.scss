@@ -1,0 +1,90 @@
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+  position: relative;
+  width: 100%;
+  max-width: 443px; /* Width de Figma */
+
+  .label-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Figma tenía flex-start para el texto, aunque un wrapper con justify-center? el diseño muestra texto a la izq */
+    padding-bottom: 4px;
+    width: 100%;
+
+    label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600; /* Semi_Bold */
+      font-size: 20px;
+      line-height: 16px;
+      color: #000000;
+    }
+  }
+
+  .input-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    height: 68px;
+    padding: 10px 16px;
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 30px;
+    border: 3px solid #aaa; /* Default border */
+    transition: all 0.2s ease-in-out;
+    box-sizing: border-box;
+
+    input {
+      flex: 1;
+      height: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-family: 'Inter', sans-serif;
+      font-weight: 400; /* Regular */
+      font-size: 18px;
+      color: #000000;
+      padding: 0;
+      
+      &::placeholder {
+        color: #4c4c4c;
+      }
+    }
+
+    .icon-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+
+      ion-icon {
+        font-size: 24px;
+        color: #000000; /* Asumiendo negro para el icono basado en el preview */
+      }
+    }
+  }
+
+  /* Variantes */
+  &.variant-default {
+    .input-wrapper {
+      border-color: #aaa;
+    }
+  }
+
+  &.variant-focused {
+    .input-wrapper {
+      border-color: #247ef4;
+    }
+  }
+
+  &.variant-filled {
+    .input-wrapper {
+      border-color: #000000;
+    }
+  }
+}
