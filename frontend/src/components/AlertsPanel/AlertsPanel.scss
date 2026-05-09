@@ -1,0 +1,40 @@
+.alerts-panel-container {
+  position: fixed;
+  right: 25px;
+  top: 200px;
+  width: 323px;
+  max-height: 562px;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 30px;
+  padding: 20px 12px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  overflow: hidden;
+
+  .panel-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: #000;
+    margin: 0 0 20px 0;
+    text-align: center;
+  }
+
+  .notifications-list {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+  }
+}

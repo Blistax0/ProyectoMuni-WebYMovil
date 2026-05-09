@@ -1,0 +1,152 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+
+  .modal-content {
+    width: 1201px;
+    background-color: #ffffff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    animation: slide-up 0.3s ease-out;
+
+    .modal-header {
+      height: 75px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: background-color 0.3s ease;
+
+      .header-title {
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        font-size: 24px;
+        color: #000;
+        margin: 0;
+        text-transform: uppercase;
+      }
+
+      .close-btn {
+        position: absolute;
+        right: 20px;
+        background: none;
+        border: none;
+        font-size: 36px;
+        color: #000;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    .modal-body {
+      padding: 40px 45px;
+      display: flex;
+      justify-content: space-between;
+      gap: 40px;
+
+      .info-section {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+        .info-row {
+          display: flex;
+          gap: 10px;
+          font-family: 'Inter', sans-serif;
+          font-size: 24px;
+          color: #000;
+
+          .label {
+            font-weight: 500;
+            white-space: nowrap;
+          }
+
+          .value {
+            font-weight: 500;
+
+            &.officers {
+              color: #818181;
+            }
+          }
+
+          &.time-row {
+            margin-top: 20px;
+          }
+        }
+
+        .evidence-section {
+          margin-top: 10px;
+          display: flex;
+          gap: 20px;
+
+          .label {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 24px;
+            color: #000;
+          }
+
+          .evidence-placeholder {
+            width: 420px;
+            height: 214px;
+            background-color: #d9d9d9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .no-image {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              gap: 10px;
+
+              img {
+                width: 60px;
+                opacity: 0.5;
+              }
+
+              p {
+                margin: 0;
+                font-family: 'Inter', sans-serif;
+                font-size: 16px;
+                color: #666;
+                font-weight: 500;
+              }
+            }
+          }
+        }
+      }
+
+      .modal-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: flex-end;
+        gap: 20px;
+      }
+    }
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

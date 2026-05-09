@@ -1,0 +1,118 @@
+.sidebar-container {
+  width: 346px;
+  height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 23px;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+
+    .muni-logo {
+      width: 65px;
+      height: 105px;
+      object-fit: cover;
+    }
+
+    .title-group {
+      .sigep-title {
+        font-family: 'Inter', sans-serif;
+        font-weight: 800;
+        font-size: 40px;
+        color: #000;
+        margin: 0;
+        line-height: 1;
+      }
+
+      .sigep-subtitle {
+        font-family: 'Inter', sans-serif;
+        font-weight: 400;
+        font-size: 20px;
+        color: #000;
+        margin: 0;
+      }
+    }
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    background-color: #eee;
+    margin: 10px 0 30px 0;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+
+    .nav-button {
+      width: 100%;
+      height: 50px;
+      background: #ffffff;
+      border-radius: 15px;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: #499de2;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &.active {
+        color: #e98800;
+        // Opcional: un ligero sombreado si el diseño lo pide
+      }
+
+      &:hover {
+        background-color: #f8f9fa;
+      }
+    }
+  }
+
+  .sidebar-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+
+    .footer-button {
+      width: 100%;
+      height: 50px;
+      background-color: #448cc7;
+      border-radius: 20px;
+      border: none;
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: #36678f;
+      }
+
+      ion-icon {
+        font-size: 24px;
+      }
+    }
+  }
+}

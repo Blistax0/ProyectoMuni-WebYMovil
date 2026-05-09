@@ -1,13 +1,12 @@
 import React from 'react';
-import { IonContent, IonPage } from '@ionic/react';
+import { IonContent, IonPage, useIonRouter } from '@ionic/react';
 import { mailOutline, lockClosedOutline } from 'ionicons/icons';
-import { useHistory } from 'react-router-dom';
 import InputField from '../../components/InputField/InputField';
 import CustomButton from '../../components/CustomButton/CustomButton';
 import './Login.scss';
 
 const Login: React.FC = () => {
-  const history = useHistory();
+  const router = useIonRouter();
 
   return (
     <IonPage>
@@ -41,18 +40,23 @@ const Login: React.FC = () => {
                 </div>
 
                 <div className="button-wrapper">
-                  <CustomButton text="Iniciar Sesión" variant="primary" size="large" />
+                  <CustomButton 
+                    text="Iniciar Sesión" 
+                    variant="primary" 
+                    size="large" 
+                    onClick={() => router.push('/dashboard', 'forward', 'push')}
+                  />
                 </div>
               </div>
 
               <footer className="login-footer">
                 <span 
                   className="footer-link" 
-                  onClick={() => history.push('/register')}
+                  onClick={() => router.push('/register', 'forward', 'push')}
                 >CREAR CUENTA</span>
                 <span 
                   className="footer-link" 
-                  onClick={() => history.push('/reset-password')}
+                  onClick={() => router.push('/reset-password', 'forward', 'push')}
                 >¿OLVIDASTE TU CONTRASEÑA?</span>
               </footer>
             </div>

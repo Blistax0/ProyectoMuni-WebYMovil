@@ -1,0 +1,67 @@
+.map-marker-container {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  z-index: 10;
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 20;
+  }
+
+  .marker-id {
+    position: absolute;
+    top: 5px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: #000;
+  }
+
+  .icon-box {
+    font-size: 30px;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  // Estados
+  &.normal {
+    background-color: rgba(108, 255, 125, 0.33);
+    border-color: #00a713;
+  }
+
+  &.emergency {
+    background-color: rgba(255, 108, 108, 0.33);
+    border-color: red;
+    
+    // Animación de pulso para emergencia
+    animation: pulse-red 2s infinite;
+  }
+
+  &.alert {
+    background-color: rgba(255, 213, 108, 0.33);
+    border-color: #e69d00;
+  }
+}
+
+@keyframes pulse-red {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(255, 0, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+  }
+}

@@ -37,6 +37,7 @@ import Home from './pages/Home';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import ResetPassword from './pages/ResetPassword/ResetPassword';
+import Dashboard from './pages/Dashboard/Dashboard';
 
 setupIonicReact();
 
@@ -52,6 +53,9 @@ const App: React.FC = () => (
         </Route>
         <Route exact path="/reset-password">
           <ResetPassword />
+        </Route>
+        <Route exact path="/dashboard">
+          <Dashboard />
         </Route>
         <Route exact path="/home">
           <Home />
