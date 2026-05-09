@@ -39,7 +39,7 @@ El proyecto aborda el déficit de vigilancia y la baja respuesta policial en sec
 
 ## 4. Tecnologías Utilizadas
 
-- **Frontend:** Ionic Framework con React y TypeScript.
+- **Frontend:** Ionic Framework con React y SCSS.
 - **Navegación:** React Router para rutas públicas y protegidas.
 - **Gestión:** GitHub Projects e Issues.
 
@@ -49,5 +49,5 @@ Para ejecutar la aplicación navegable en modo desarrollo, siga estos pasos:
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone [URL_DE_TU_REPOSITORIO]
+   git clone
    ```
