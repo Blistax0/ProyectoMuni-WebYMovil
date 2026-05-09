@@ -1,0 +1,81 @@
+.custom-button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700; // Bold
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px; // Default radius
+
+  // --- SIZES ---
+  &.size-large {
+    width: 100%;
+    max-width: 443px;
+    height: 68px;
+    font-size: 20px;
+  }
+
+  &.size-medium {
+    width: 100%;
+    max-width: 300px;
+    height: 50px;
+    font-size: 20px; 
+    border-radius: 15px;
+  }
+
+  &.size-compact {
+    width: 100%;
+    max-width: 180px;
+    height: 62px;
+    font-size: 16px;
+  }
+
+  // Especial: Botón Azul Mediano (Perfil/Cerrar Sesión) usa 16px y bordes 20px
+  &.size-medium.variant-primary {
+    font-size: 16px;
+    border-radius: 20px;
+  }
+
+  // --- VARIANTS ---
+  
+  // PRIMARY (Blue)
+  &.variant-primary {
+    background-color: #36678f;
+    color: #ffffff;
+    &:hover { background-color: #72a6d0; }
+    &:active { background-color: #448cc7; }
+  }
+
+  // SECONDARY (Orange)
+  &.variant-secondary {
+    background-color: #e98800;
+    color: #ffffff;
+    &:hover { background-color: #ffc067; }
+    &:active { background-color: #b46900; }
+  }
+
+  // SELECT ORANGE (White/Gray with orange text)
+  &.variant-select-orange {
+    background-color: #ffffff;
+    color: #e98800;
+    &:hover { background-color: #d8d8d8; color: #db8000; }
+    &:active { background-color: #eee; }
+  }
+
+  // SELECT BLUE (White/Gray with blue text)
+  &.variant-select-blue {
+    background-color: #ffffff;
+    color: #499de2;
+    &:hover { background-color: #d8d8d8; color: #116bb4; }
+    &:active { background-color: #eee; }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
