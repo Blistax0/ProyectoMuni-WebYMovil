@@ -4,7 +4,8 @@
 * **Asignatura:** Ingeniería Web y Móvil (ICI 4247)
 * **Institución:** Pontificia Universidad Católica de Valparaíso (PUCV)
 * **Paralelo:** 02
-* **Integrantes:** * Renato Valentín Mujica Vergara
+* **Integrantes:**
+    * Renato Valentín Mujica Vergara
     * Sofia Belén Mena Cortés
     * Yamil Soleman
     * Felipe Joaquín Chávez González
