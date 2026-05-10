@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import { IonContent, IonPage } from '@ionic/react';
+import { IonContent, IonPage, useIonRouter } from '@ionic/react';
 import { personOutline, peopleOutline, mailOutline, locationOutline, mapOutline, lockClosedOutline, idCardOutline, callOutline } from 'ionicons/icons';
 import InputField from '../../components/InputField/InputField';
 import CustomButton from '../../components/CustomButton/CustomButton';
 import StepIndicator from '../../components/StepIndicator/StepIndicator';
-import { useHistory } from 'react-router-dom';
 import './Register.scss';
 
 const Register: React.FC = () => {
   const [step, setStep] = useState(1);
-  const history = useHistory();
+  const router = useIonRouter();
 
   return (
     <IonPage>
@@ -50,13 +49,13 @@ const Register: React.FC = () => {
               text={step === 1 ? "Volver a Inicio de Sesión" : "Atrás"} 
               variant="primary" 
               size="large" 
-              onClick={() => step === 1 ? history.push('/login') : setStep(1)}
+              onClick={() => step === 1 ? router.push('/login', 'back', 'push') : setStep(1)}
             />
             <CustomButton 
               text={step === 1 ? "Siguiente" : "Registrarse"} 
               variant="primary" 
               size="large" 
-              onClick={() => step === 1 ? setStep(2) : history.push('/login')}
+              onClick={() => step === 1 ? setStep(2) : router.push('/login', 'back', 'push')}
             />
           </footer>
         </div>

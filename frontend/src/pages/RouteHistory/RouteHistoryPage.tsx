@@ -2,22 +2,14 @@ import React, { useState } from 'react';
 import { IonContent, IonPage } from '@ionic/react';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import MapViewport from '../../components/GeoFencing/MapViewport';
-import MapMarker, { MarkerType } from '../../components/MapMarker/MapMarker';
+import MapMarker from '../../components/MapMarker/MapMarker';
 import RouteSummaryPanel from '../../components/RouteHistory/RouteSummaryPanel';
 import PlaybackControl from '../../components/RouteHistory/PlaybackControl';
+import { PATROL_POSITIONS } from '../../data/patrolPositions';
 import './RouteHistoryPage.scss';
 
 const RouteHistoryPage: React.FC = () => {
   const [selectedPatrolId, setSelectedPatrolId] = useState<number | null>(null);
-
-  const patrols = [
-    { id: 1, top: '1365px', left: '558px' },
-    { id: 2, top: '32px', left: '1082px' },
-    { id: 3, top: '904px', left: '796px' },
-    { id: 4, top: '1348px', left: '1363px' },
-    { id: 5, top: '1663px', left: '1824px' },
-    { id: 6, top: '481px', left: '494px' },
-  ];
 
   const patrolData: Record<number, any> = {
     1: {
@@ -67,14 +59,14 @@ const RouteHistoryPage: React.FC = () => {
               isDrawingMode={false}
               markers={
                 <>
-                  {patrols.map(p => (
+                  {PATROL_POSITIONS.map(patrol => (
                     <MapMarker 
-                      key={p.id}
-                      id={p.id}
-                      type={selectedPatrolId === p.id ? 'active' : 'selectable'}
-                      top={p.top}
-                      left={p.left}
-                      onClick={() => handlePatrolClick(p.id)}
+                      key={patrol.id}
+                      id={patrol.id}
+                      type={selectedPatrolId === patrol.id ? 'active' : 'selectable'}
+                      top={patrol.top}
+                      left={patrol.left}
+                      onClick={() => handlePatrolClick(patrol.id)}
                     />
                   ))}
                 </>

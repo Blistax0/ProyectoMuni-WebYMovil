@@ -18,7 +18,7 @@
     width: 100%;
     height: 100%;
     position: absolute;
-    transform-origin: center;
+    transform-origin: 0 0; // El JS aplica translate desde (0,0), no desde el centro
     transition: transform 0.05s linear; // Transición mínima para suavidad
     display: flex;
     align-items: center;

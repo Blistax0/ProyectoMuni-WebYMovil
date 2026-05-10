@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { IonIcon, useIonRouter } from '@ionic/react';
+import { useLocation } from 'react-router-dom';
 import { personOutline, logOutOutline } from 'ionicons/icons';
+import { useAuth } from '../../context/AuthContext';
 import UserProfileModal from '../Modals/UserProfileModal';
 import './Sidebar.scss';
 
 const Sidebar: React.FC = () => {
   const router = useIonRouter();
-  const currentPath = window.location.pathname;
+  const { pathname } = useLocation(); // Reactivo con IonReactRouter
+  const { logout } = useAuth();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const menuItems = [
@@ -17,6 +20,7 @@ const Sidebar: React.FC = () => {
   ];
 
   const handleLogout = () => {
+    logout(); // Limpia la sesión del localStorage
     router.push('/login', 'back', 'push');
   };
 
@@ -36,7 +40,7 @@ const Sidebar: React.FC = () => {
         {menuItems.map((item) => (
           <button
             key={item.label}
-            className={`nav-button ${currentPath === item.path ? 'active' : ''}`}
+            className={`nav-button ${pathname === item.path ? 'active' : ''}`}
             onClick={() => router.push(item.path, 'forward', 'push')}
           >
             {item.label}

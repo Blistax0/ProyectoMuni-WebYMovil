@@ -6,24 +6,26 @@ import './UnifiedModal.scss';
 
 export type AlertType = 'panic' | 'incident' | 'geofence';
 
+export interface ModalAlertData {
+  type: AlertType;
+  title: string;
+  unit: string;
+  location: string;
+  coords: string;
+  statusLabel?: string;
+  statusValue?: string;
+  gravity?: string;
+  officers?: string;
+  time: string;
+  evidence?: string;
+  primaryAction: string;
+  secondaryAction?: string;
+}
+
 interface UnifiedModalProps {
   isOpen: boolean;
   onClose: () => void;
-  data: {
-    type: AlertType;
-    title: string;
-    unit: string;
-    location: string;
-    coords: string;
-    statusLabel?: string;
-    statusValue?: string;
-    gravity?: string;
-    officers?: string;
-    time: string;
-    evidence?: string;
-    primaryAction: string;
-    secondaryAction?: string;
-  } | null;
+  data: ModalAlertData | null;
 }
 
 const UnifiedModal: React.FC<UnifiedModalProps> = ({ isOpen, onClose, data }) => {

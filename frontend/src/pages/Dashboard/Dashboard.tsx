@@ -1,25 +1,18 @@
 import React, { useState } from 'react';
 import { IonContent, IonPage } from '@ionic/react';
 import Sidebar from '../../components/Sidebar/Sidebar';
-import MapMarker, { MarkerType } from '../../components/MapMarker/MapMarker';
+import MapMarker from '../../components/MapMarker/MapMarker';
 import AlertsPanel from '../../components/AlertsPanel/AlertsPanel';
 import UnifiedModal from '../../components/Modals/UnifiedModal';
 import MapViewport from '../../components/GeoFencing/MapViewport';
+import { ModalAlertData } from '../../components/Modals/UnifiedModal';
 import { NotificationData } from '../../components/AlertsPanel/NotificationItem';
+import { PATROL_POSITIONS, PATROL_LIVE_STATUS } from '../../data/patrolPositions';
 import './Dashboard.scss';
 
 const Dashboard: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedAlert, setSelectedAlert] = useState<any>(null);
-
-  const markers = [
-    { id: 6, type: 'normal' as MarkerType, top: '481px', left: '494px' },
-    { id: 4, type: 'normal' as MarkerType, top: '1348px', left: '1363px' },
-    { id: 1, type: 'emergency' as MarkerType, top: '1365px', left: '558px' },
-    { id: 3, type: 'normal' as MarkerType, top: '904px', left: '796px' },
-    { id: 5, type: 'alert' as MarkerType, top: '1663px', left: '1824px' },
-    { id: 2, type: 'emergency' as MarkerType, top: '32px', left: '1082px' },
-  ];
+  const [selectedAlert, setSelectedAlert] = useState<ModalAlertData | null>(null);
 
   const notifications: NotificationData[] = [
     {
@@ -75,12 +68,22 @@ const Dashboard: React.FC = () => {
     }
   ];
 
+  // Mapa de patrulla ID → notificación correspondiente
+  const patrolNotificationMap: Record<number, string> = {
+    1: 'p1',
+    2: 'p2',
+    5: 'g5',
+  };
+
   const handleNotificationClick = (notif: NotificationData) => {
-    let modalData: any = {
+    let modalData: ModalAlertData = {
       type: notif.type,
       time: `Hace ${notif.time}`,
       location: notif.subtitle.split(' - ')[1] + ', Santo Domingo, Valparaíso',
       unit: notif.subtitle.split(' - ')[0],
+      title: '',
+      coords: '',
+      primaryAction: '',
     };
 
     if (notif.type === 'panic') {
@@ -96,7 +99,6 @@ const Dashboard: React.FC = () => {
     } else if (notif.type === 'incident') {
       const isGrave = notif.incidentNumber === 3;
       const isMedia = notif.incidentNumber === 2;
-      
       modalData = {
         ...modalData,
         title: 'DETALLE DE INCIDENTE REPORTADO',
@@ -119,6 +121,13 @@ const Dashboard: React.FC = () => {
     setIsModalOpen(true);
   };
 
+  const handleMarkerClick = (patrolId: number) => {
+    const notifId = patrolNotificationMap[patrolId];
+    if (!notifId) return; // Patrullas sin alerta activa no abren modal
+    const notif = notifications.find(n => n.id === notifId);
+    if (notif) handleNotificationClick(notif);
+  };
+
   return (
     <IonPage>
       <IonContent fullscreen scrollY={false}>
@@ -132,14 +141,14 @@ const Dashboard: React.FC = () => {
                 isDrawingMode={false}
                 markers={
                   <>
-                    {markers.map((m) => (
+                    {PATROL_POSITIONS.map((patrol) => (
                       <MapMarker 
-                        key={m.id}
-                        id={m.id}
-                        type={m.type}
-                        top={m.top}
-                        left={m.left}
-                        onClick={() => handleNotificationClick(notifications.find(n => n.id === `p${m.id === 1 ? 1 : 2}`) || notifications[0])}
+                        key={patrol.id}
+                        id={patrol.id}
+                        type={PATROL_LIVE_STATUS[patrol.id]}
+                        top={patrol.top}
+                        left={patrol.left}
+                        onClick={() => handleMarkerClick(patrol.id)}
                       />
                     ))}
                   </>
@@ -165,3 +174,4 @@ const Dashboard: React.FC = () => {
 };
 
 export default Dashboard;
+

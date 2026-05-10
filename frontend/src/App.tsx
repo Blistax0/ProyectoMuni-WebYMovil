@@ -1,3 +1,4 @@
+import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
@@ -18,25 +19,20 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
-
-/* import '@ionic/react/css/palettes/dark.always.css'; */
-/* import '@ionic/react/css/palettes/dark.class.css'; */
-import '@ionic/react/css/palettes/dark.system.css';
-
 /* Theme variables */
 import './theme/variables.css';
 
-/* Pages */
-import Home from './pages/Home';
+/* Auth */
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/Auth/ProtectedRoute';
+import PublicRoute from './components/Auth/PublicRoute';
+
+/* Páginas Públicas */
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import ResetPassword from './pages/ResetPassword/ResetPassword';
+
+/* Páginas Protegidas */
 import Dashboard from './pages/Dashboard/Dashboard';
 import GeoFencingPage from './pages/GeoFencing/GeoFencingPage';
 import RouteHistoryPage from './pages/RouteHistory/RouteHistoryPage';
@@ -45,39 +41,31 @@ import IncidentManagementPage from './pages/IncidentManagement/IncidentManagemen
 setupIonicReact();
 
 const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route exact path="/login">
-          <Login />
-        </Route>
-        <Route exact path="/register">
-          <Register />
-        </Route>
-        <Route exact path="/reset-password">
-          <ResetPassword />
-        </Route>
-        <Route exact path="/dashboard">
-          <Dashboard />
-        </Route>
-        <Route exact path="/geofencing">
-          <GeoFencingPage />
-        </Route>
-        <Route exact path="/history">
-          <RouteHistoryPage />
-        </Route>
-        <Route exact path="/incidents">
-          <IncidentManagementPage />
-        </Route>
-        <Route exact path="/home">
-          <Home />
-        </Route>
-        <Route exact path="/">
-          <Redirect to="/login" />
-        </Route>
-      </IonRouterOutlet>
-    </IonReactRouter>
-  </IonApp>
+  <AuthProvider>
+    <IonApp>
+      <IonReactRouter>
+        <IonRouterOutlet>
+
+          {/* ── Rutas Públicas (solo accesibles sin sesión) ──────────────── */}
+          <PublicRoute exact path="/login" component={Login} />
+          <PublicRoute exact path="/register" component={Register} />
+          <PublicRoute exact path="/reset-password" component={ResetPassword} />
+
+          {/* ── Rutas Protegidas (requieren sesión activa) ────────────────── */}
+          <ProtectedRoute exact path="/dashboard" component={Dashboard} />
+          <ProtectedRoute exact path="/geofencing" component={GeoFencingPage} />
+          <ProtectedRoute exact path="/history" component={RouteHistoryPage} />
+          <ProtectedRoute exact path="/incidents" component={IncidentManagementPage} />
+
+          {/* ── Redirección raíz ─────────────────────────────────────────── */}
+          <Route exact path="/">
+            <Redirect to="/login" />
+          </Route>
+
+        </IonRouterOutlet>
+      </IonReactRouter>
+    </IonApp>
+  </AuthProvider>
 );
 
 export default App;

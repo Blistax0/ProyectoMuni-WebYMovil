@@ -8,14 +8,16 @@ interface MapViewportProps {
   children?: React.ReactNode;
 }
 
+// Tamaño real del mapa base de Santo Domingo (extraído de Figma)
+const MAP_IMAGE_SIZE = { width: 1904, height: 1865 };
+
 const MapViewport: React.FC<MapViewportProps> = ({ imageSrc, isDrawingMode, markers, children }) => {
   const [scale, setScale] = useState(1);
-  const [position, setPosition] = useState({ x: -200, y: -200 }); // Posición inicial similar a Figma
+  const [position, setPosition] = useState({ x: -200, y: -200 }); // Posición inicial equivalente a Figma
   const [isDragging, setIsDragging] = useState(false);
   const [startPan, setStartPan] = useState({ x: 0, y: 0 });
   
   const containerRef = useRef<HTMLDivElement>(null);
-  const imageSize = { width: 1904, height: 1865 };
 
   const clampPosition = useCallback((x: number, y: number, currentScale: number) => {
     if (!containerRef.current) return { x, y };
@@ -23,8 +25,8 @@ const MapViewport: React.FC<MapViewportProps> = ({ imageSrc, isDrawingMode, mark
     const vWidth = containerRef.current.clientWidth;
     const vHeight = containerRef.current.clientHeight;
     
-    const scaledWidth = imageSize.width * currentScale;
-    const scaledHeight = imageSize.height * currentScale;
+    const scaledWidth = MAP_IMAGE_SIZE.width * currentScale;
+    const scaledHeight = MAP_IMAGE_SIZE.height * currentScale;
 
     // Límites: la imagen no puede dejar ver el fondo si es más grande que el viewport
     let minX = vWidth - scaledWidth;
@@ -81,12 +83,14 @@ const MapViewport: React.FC<MapViewportProps> = ({ imageSrc, isDrawingMode, mark
 
   useEffect(() => {
     const container = containerRef.current;
+    // Referencia nombrada para poder eliminar exactamente el mismo listener (fix memory leak)
+    const preventDefaultScroll = (e: WheelEvent) => e.preventDefault();
     if (container) {
-      container.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+      container.addEventListener('wheel', preventDefaultScroll, { passive: false });
     }
     return () => {
       if (container) {
-        container.removeEventListener('wheel', (e) => e.preventDefault());
+        container.removeEventListener('wheel', preventDefaultScroll);
       }
     };
   }, []);
@@ -105,8 +109,8 @@ const MapViewport: React.FC<MapViewportProps> = ({ imageSrc, isDrawingMode, mark
         className="map-transform-layer"
         style={{
           transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-          width: `${imageSize.width}px`,
-          height: `${imageSize.height}px`
+          width: `${MAP_IMAGE_SIZE.width}px`,
+          height: `${MAP_IMAGE_SIZE.height}px`
         }}
       >
         <img src={imageSrc} alt="Map" className="map-image" draggable={false} />

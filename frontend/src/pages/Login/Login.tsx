@@ -3,10 +3,17 @@ import { IonContent, IonPage, useIonRouter } from '@ionic/react';
 import { mailOutline, lockClosedOutline } from 'ionicons/icons';
 import InputField from '../../components/InputField/InputField';
 import CustomButton from '../../components/CustomButton/CustomButton';
+import { useAuth } from '../../context/AuthContext';
 import './Login.scss';
 
 const Login: React.FC = () => {
   const router = useIonRouter();
+  const { login } = useAuth();
+
+  const handleLogin = () => {
+    login(); // Establece la sesión en localStorage
+    router.push('/dashboard', 'forward', 'push');
+  };
 
   return (
     <IonPage>
@@ -44,7 +51,7 @@ const Login: React.FC = () => {
                     text="Iniciar Sesión" 
                     variant="primary" 
                     size="large" 
-                    onClick={() => router.push('/dashboard', 'forward', 'push')}
+                    onClick={handleLogin}
                   />
                 </div>
               </div>

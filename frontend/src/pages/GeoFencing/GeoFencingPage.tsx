@@ -4,7 +4,8 @@ import Sidebar from '../../components/Sidebar/Sidebar';
 import MapViewport from '../../components/GeoFencing/MapViewport';
 import PerimetersPanel from '../../components/GeoFencing/PerimetersPanel';
 import DrawingTools from '../../components/GeoFencing/DrawingTools';
-import MapMarker, { MarkerType } from '../../components/MapMarker/MapMarker';
+import MapMarker from '../../components/MapMarker/MapMarker';
+import { PATROL_POSITIONS } from '../../data/patrolPositions';
 import './GeoFencingPage.scss';
 
 const GeoFencingPage: React.FC = () => {
@@ -13,15 +14,6 @@ const GeoFencingPage: React.FC = () => {
   const toggleDrawingMode = () => {
     setIsDrawingMode(!isDrawingMode);
   };
-
-  const markers = [
-    { id: 6, type: 'normal' as MarkerType, top: '481px', left: '494px' },
-    { id: 4, type: 'normal' as MarkerType, top: '1348px', left: '1363px' },
-    { id: 1, type: 'normal' as MarkerType, top: '1365px', left: '558px' },
-    { id: 3, type: 'normal' as MarkerType, top: '904px', left: '796px' },
-    { id: 5, type: 'normal' as MarkerType, top: '1663px', left: '1824px' },
-    { id: 2, type: 'normal' as MarkerType, top: '32px', left: '1082px' },
-  ];
 
   return (
     <IonPage>
@@ -35,13 +27,13 @@ const GeoFencingPage: React.FC = () => {
               isDrawingMode={isDrawingMode}
               markers={
                 <>
-                  {markers.map(m => (
+                  {PATROL_POSITIONS.map(patrol => (
                     <MapMarker 
-                      key={m.id}
-                      id={m.id}
-                      type={m.type}
-                      top={m.top}
-                      left={m.left}
+                      key={patrol.id}
+                      id={patrol.id}
+                      type="normal"
+                      top={patrol.top}
+                      left={patrol.left}
                     />
                   ))}
                 </>
