@@ -21,5 +21,5 @@ Para desplegar el entorno de desarrollo y visualizar la aplicación navegable, s
 ### Pasos para la ejecución local
 1. **Clonar el repositorio:**
    ```bash
-   git clone [URL_DE_TU_REPOSITORIO]
-   cd [NOMBRE_DE_LA_CARPETA]
+git clone https://github.com/Blistax0/ProyectoMuni-WebYMovil.git
+cd ProyectoMuni-WebYMovil
