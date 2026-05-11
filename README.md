@@ -50,7 +50,7 @@ Para desplegar el entorno de desarrollo y visualizar la aplicación navegable, s
    http://localhost:8100
    ```
 
-## 3. Documentación y Entragas Parciales (EP1.X)
+## 3. Documentación y Entregas Parciales (EP1.X)
 
 Este proyecto consiste en una plataforma integral diseñada para optimizar la seguridad pública mediante la digitalización del patrullaje, permitiendo una respuesta coordinada y basada en datos tácticos.
 
@@ -97,7 +97,7 @@ La digitalización permite una respuesta basada en georreferenciación táctica 
 Se diseñaron 7 mockups clave (5 Web y 2 Móvil) abordando la vista del Administrador (Web) y del Patrullero (Móvil), asegurando consistencia visual y cumplimiento de los flujos operativos.
 
 * Enlace al prototipo interactivo **Web** en Figma: https://www.figma.com/proto/nOHPZ6g961u6kdAUyUV8fe/Proyecto-Webwebweb?node-id=168-627&p=f&t=r16ndPMlnBqEBdHg-1&scaling=scale-down&content-scaling=fixed&page-id=12%3A56&starting-point-node-id=168%3A627
-* * Enlace al prototipo interactivo **Móvil** en Figma: https://www.figma.com/proto/nOHPZ6g961u6kdAUyUV8fe/Proyecto-Webwebweb?node-id=379-1211&p=f&t=fRTF9xQfLmM2owrm-1&scaling=scale-down&content-scaling=fixed&page-id=173%3A2517&starting-point-node-id=379%3A1211
+* Enlace al prototipo interactivo **Móvil** en Figma: https://www.figma.com/proto/nOHPZ6g961u6kdAUyUV8fe/Proyecto-Webwebweb?node-id=379-1211&p=f&t=fRTF9xQfLmM2owrm-1&scaling=scale-down&content-scaling=fixed&page-id=173%3A2517&starting-point-node-id=379%3A1211
 
 ---
 
@@ -116,15 +116,15 @@ La arquitectura de navegación sigue un modelo de árbol con protección de ruta
 
 **Nivel 0: Rutas Públicas (autenticación):**
 * `/login` (Web y Móvil): Pantalla de ingreso. Es el punto de entrada obligatorio.
-* `/registro` (Web y Móvil): Flujo de dos pasos (Datos Generales y Seguridad).
+* `/register` (Web y Móvil): Flujo de dos pasos (Datos Generales y Seguridad).
 
 **Nivel 1: Rutas Privadas Principales (Dashboard Web):**
 
 El administrador navega a través de un Menú Lateral Persistente que cambia el contexto sin desmontar el componente base del mapa.
 
-* `/dashboard/monitoreo`: Vista raíz. Máxima jerarquía visual para alertas en tiempo real.
-* `/dashboard/geocercas`: Vista de configuración territorial.
-* `/dashboard/historial`: Vista de auditoría de rutas pesadas.
+* `/dashboard`: Vista raíz. Máxima jerarquía visual para alertas en tiempo real.
+* `/geofencing`: Vista de configuración territorial.
+* `/history`: Vista de auditoría de rutas pesadas.
 
 **Nivel 2: Vistas Sobrepuestas (Modales y Popups):**
 
@@ -172,22 +172,8 @@ Para asegurar la entrega y calidad del software, se utilizan las siguientes herr
 
 El sistema está desarrollado con el stack **Ionic + React**, manteniendo una arquitectura modular basada en componentes para asegurar escalabilidad, separando claramente las vistas, la lógica de estado y los elementos reutilizables:
 
-```text
-📦 PROYECTOMUNI-WEBYMOVIL
-┗ 📂 frontend
-  ┣ 📂 cypress             # Pruebas automatizadas End-to-End (E2E)
-  ┣ 📂 public              # Activos estáticos públicos (favicon, manifiest)
-  ┣ 📂 src                 # Código fuente principal de la aplicación
-  ┃ ┣ 📂 components        # Componentes UI reutilizables (Popups, Menú Lateral, etc.)
-  ┃ ┣ 📂 context           # Gestión del estado global (React Context API)
-  ┃ ┣ 📂 data              # Mock data, interfaces TypeScript y servicios de conexión
-  ┃ ┣ 📂 pages             # Vistas de navegación (Monitoreo, Historial, Login, etc.)
-  ┃ ┣ 📂 theme             # Variables globales CSS e identidad visual institucional
-  ┃ ┣ 📜 App.tsx           # Componente raíz y configuración de enrutamiento principal
-  ┃ ┗ 📜 main.tsx          # Punto de entrada y renderizado de la aplicación React
-  ┣ 📜 capacitor.config.ts # Configuración de Capacitor para empaquetado móvil nativo
-  ┣ 📜 ionic.config.json   # Configuración y metadatos del framework Ionic
-  ┣ 📜 package.json        # Registro de dependencias (node_modules) y scripts
-  ┗ 📜 vite.config.ts      # Configuración del empaquetador ultrarrápido Vite
+<img width="871" height="686" alt="image" src="https://github.com/user-attachments/assets/2db0a3b6-ee7e-4e4b-a1e2-067ecc19a854" />
+
+
 
 ---
