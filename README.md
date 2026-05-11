@@ -7,7 +7,7 @@
 * **Integrantes:**
     * Renato Valentín Mujica Vergara
     * Sofia Belén Mena Cortés
-    * Yamil Soleman
+    * Yamil Alejando Soleman Fernández
     * Felipe Joaquín Chávez González
 
 ---
