@@ -32,7 +32,7 @@ Este proyecto consiste en una plataforma integral diseñada para optimizar la se
 
 ---
 
-## 4. Justificación del Problema (EP 1.2)
+## 3. Justificación del Problema (EP 1.2)
 El municipio de Santo Domingo enfrenta desafíos de seguridad en sectores residenciales y costeros con baja organización vecinal y focos de incivilidades. Actualmente, la gestión depende de bitácoras físicas o planillas Excel, lo que genera:
 * **Invisibilidad operativa:** Falta de control sobre la ubicación de las unidades.
 * **Pérdida de información:** Reportes manuales propensos a errores.
@@ -42,9 +42,9 @@ La digitalización permite una respuesta basada en **georreferenciación táctic
 
 ---
 
-## 3. Requerimientos del Sistema (EP 1.1)
+## 4. Requerimientos del Sistema (EP 1.1)
 
-### 3.1 Requerimientos Funcionales (RF)
+### 4.1 Requerimientos Funcionales (RF)
 Se han definido 7 requerimientos críticos bajo estándares de prevención situacional:
 
 | Requerimiento | Justificación Técnica y Operativa |
@@ -57,7 +57,7 @@ Se han definido 7 requerimientos críticos bajo estándares de prevención situa
 | **Protocolo de Emergencia (Botón de Pánico)** | Alerta sonora y de ubicación inmediata a la central con un solo toque para la seguridad del personal. |
 | **Trazabilidad y Derivación de Casos** | Seguimiento de incidentes hasta su resolución, facilitando la derivación a departamentos como luminarias o aseo. |
 
-### 3.2 Requerimientos No Funcionales (RNF)
+### 4.2 Requerimientos No Funcionales (RNF)
 * **Rendimiento:** Latencia GPS < 2s para un seguimiento fluido en emergencias.
 * **Seguridad:** Autenticación mediante **JWT (JSON Web Tokens)** para proteger la integridad de datos sensibles de seguridad pública.
 * **Usabilidad (UI/UX Situacional):** Interfaz de alto contraste y componentes de gran escala para uso óptimo bajo luz solar y en movimiento.
