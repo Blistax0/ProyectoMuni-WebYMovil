@@ -92,7 +92,12 @@ La digitalización permite una respuesta basada en georreferenciación táctica 
 
 ---
 
-### 3.3 Mockups y UI/UX (EP 1.3)
+### 3.3 Diseño de Interfaces (EP 1.3)
+
+Se diseñaron 7 mockups clave (5 Web y 2 Móvil) abordando la vista del Administrador (Web) y del Patrullero (Móvil), asegurando consistencia visual y cumplimiento de los flujos operativos.
+
+* Enlace al prototipo interactivo **Web** en Figma: https://www.figma.com/proto/nOHPZ6g961u6kdAUyUV8fe/Proyecto-Webwebweb?node-id=168-627&p=f&t=r16ndPMlnBqEBdHg-1&scaling=scale-down&content-scaling=fixed&page-id=12%3A56&starting-point-node-id=168%3A627
+* * Enlace al prototipo interactivo **Móvil** en Figma: https://www.figma.com/proto/nOHPZ6g961u6kdAUyUV8fe/Proyecto-Webwebweb?node-id=379-1211&p=f&t=fRTF9xQfLmM2owrm-1&scaling=scale-down&content-scaling=fixed&page-id=173%3A2517&starting-point-node-id=379%3A1211
 
 ---
 
@@ -163,12 +168,26 @@ Para asegurar la entrega y calidad del software, se utilizan las siguientes herr
 - **Gestión de Requerimientos:** Uso activo de **GitHub Issues** para la trazabilidad de cada funcionalidad.
 - **Control de Tareas:** Seguimiento de avances mediante tablero **GitHub Projects** bajo metodología **Kanban**.
 
-### Arquitectura de Software
+### Arquitectura de Software y Estructura del Proyecto
 
-El sistema está desarrollado con el stack **Ionic + React**, manteniendo una estructura modular para asegurar escalabilidad:
+El sistema está desarrollado con el stack **Ionic + React**, manteniendo una arquitectura modular basada en componentes para asegurar escalabilidad, separando claramente las vistas, la lógica de estado y los elementos reutilizables:
 
-- `pages/`: Vistas principales de la aplicación.
-- `components/`: Unidades de interfaz reutilizables.
-- `services/`: Lógica de consumo de APIs y servicios externos.
+```text
+📦 PROYECTOMUNI-WEBYMOVIL
+┗ 📂 frontend
+  ┣ 📂 cypress             # Pruebas automatizadas End-to-End (E2E)
+  ┣ 📂 public              # Activos estáticos públicos (favicon, manifiest)
+  ┣ 📂 src                 # Código fuente principal de la aplicación
+  ┃ ┣ 📂 components        # Componentes UI reutilizables (Popups, Menú Lateral, etc.)
+  ┃ ┣ 📂 context           # Gestión del estado global (React Context API)
+  ┃ ┣ 📂 data              # Mock data, interfaces TypeScript y servicios de conexión
+  ┃ ┣ 📂 pages             # Vistas de navegación (Monitoreo, Historial, Login, etc.)
+  ┃ ┣ 📂 theme             # Variables globales CSS e identidad visual institucional
+  ┃ ┣ 📜 App.tsx           # Componente raíz y configuración de enrutamiento principal
+  ┃ ┗ 📜 main.tsx          # Punto de entrada y renderizado de la aplicación React
+  ┣ 📜 capacitor.config.ts # Configuración de Capacitor para empaquetado móvil nativo
+  ┣ 📜 ionic.config.json   # Configuración y metadatos del framework Ionic
+  ┣ 📜 package.json        # Registro de dependencias (node_modules) y scripts
+  ┗ 📜 vite.config.ts      # Configuración del empaquetador ultrarrápido Vite
 
 ---
