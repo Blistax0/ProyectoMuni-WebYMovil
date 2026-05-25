@@ -1,0 +1,13 @@
+.geofencing-page {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-color: #eee;
+
+  .map-view-container {
+    flex: 1;
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+  }
+}

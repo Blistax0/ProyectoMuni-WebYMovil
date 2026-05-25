@@ -1,0 +1,21 @@
+.incident-management-page {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-color: #eee;
+
+  .incident-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .placeholder-text {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: #000;
+      letter-spacing: 0.05em;
+    }
+  }
+}

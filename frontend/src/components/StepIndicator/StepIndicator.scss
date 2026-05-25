@@ -1,0 +1,21 @@
+.step-indicator-container {
+  width: 100%;
+  max-width: 1234px; // Medida exacta de Figma
+  margin: 20px auto;
+
+  .step-progress-bg {
+    width: 100%;
+    height: 14px;
+    background-color: #c4c4c4;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+
+    .step-progress-bar {
+      height: 100%;
+      background-color: #448cc7; // Azul SIGEP
+      border-radius: 10px;
+      transition: width 0.3s ease-in-out;
+    }
+  }
+}
