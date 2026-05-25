@@ -32,6 +32,10 @@ sequelize.sync({ alter: true })
     .then(() => console.log('¡Tablas sincronizadas con la base de datos!'))
     .catch((err) => console.error('Error sincronizando tablas:', err));
 
+// Importar y usar rutas
+const rutasUsuarios = require('./routes/usuariosRoutes');
+app.use('/api/usuarios', rutasUsuarios);
+
 app.get('/', (req, res) => {
     res.json({ mensaje: '¡El servidor backend del SIGEP está funcionando correctamente!' });
 });
