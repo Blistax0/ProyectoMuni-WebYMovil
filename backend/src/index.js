@@ -34,7 +34,13 @@ sequelize.sync({ alter: true })
 
 // Importar y usar rutas
 const rutasUsuarios = require('./routes/usuariosRoutes');
+const rutasIncidentes = require('./routes/incidentesRoutes');
+const rutasGeocercas = require('./routes/geocercasRoutes'); 
+const rutasPosiciones = require('./routes/posicionesRoutes');
 app.use('/api/usuarios', rutasUsuarios);
+app.use('/api/incidentes', rutasIncidentes);
+app.use('/api/geocercas', rutasGeocercas);
+app.use('/api/posiciones', rutasPosiciones);
 
 app.get('/', (req, res) => {
     res.json({ mensaje: '¡El servidor backend del SIGEP está funcionando correctamente!' });
