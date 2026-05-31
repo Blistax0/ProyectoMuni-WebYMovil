@@ -37,10 +37,13 @@ const rutasUsuarios = require('./routes/usuariosRoutes');
 const rutasIncidentes = require('./routes/incidentesRoutes');
 const rutasGeocercas = require('./routes/geocercasRoutes'); 
 const rutasPosiciones = require('./routes/posicionesRoutes');
+const rutasAuth = require('./routes/authRoutes');
+
 app.use('/api/usuarios', rutasUsuarios);
 app.use('/api/incidentes', rutasIncidentes);
 app.use('/api/geocercas', rutasGeocercas);
 app.use('/api/posiciones', rutasPosiciones);
+app.use('/api/auth', rutasAuth);
 
 app.get('/', (req, res) => {
     res.json({ mensaje: '¡El servidor backend del SIGEP está funcionando correctamente!' });
