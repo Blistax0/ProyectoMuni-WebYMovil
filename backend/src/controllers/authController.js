@@ -8,7 +8,7 @@ const login = async (req, res) => {
 
         // Validar que vengan los datos
         if (!correo || !password) {
-            return res.status(400).json({ mensaje: 'Correo y contraseña son obligatorios' });
+            return res.status(400).json({ mensaje: 'Por favor ingresa tu correo y tu contraseña' });
         }
 
         // Buscar al usuario por correo
@@ -25,7 +25,7 @@ const login = async (req, res) => {
         // Comparar contraseñas
         const passwordValida = await bcrypt.compare(password, usuario.password_hash);
         if (!passwordValida) {
-            return res.status(401).json({ mensaje: 'Credenciales inválidas' });
+            return res.status(401).json({ mensaje: 'Las credenciales ingresadas son incorrectas' });
         }
 
         // Generar JWT
@@ -52,7 +52,7 @@ const login = async (req, res) => {
 
     } catch (error) {
         console.error('Error en el login:', error);
-        res.status(500).json({ mensaje: 'Error interno del servidor', error: error.message });
+        res.status(500).json({ mensaje: 'Hubo un problema en el servidor al intentar iniciar sesión. Por favor intenta de nuevo.', error: error.message });
     }
 };
 
