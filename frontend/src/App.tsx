@@ -52,10 +52,10 @@ const App: React.FC = () => (
           <PublicRoute exact path="/reset-password" component={ResetPassword} />
 
           {/* ── Rutas Protegidas (requieren sesión activa) ────────────────── */}
-          <ProtectedRoute exact path="/dashboard" component={Dashboard} />
-          <ProtectedRoute exact path="/geofencing" component={GeoFencingPage} />
-          <ProtectedRoute exact path="/history" component={RouteHistoryPage} />
-          <ProtectedRoute exact path="/incidents" component={IncidentManagementPage} />
+          <ProtectedRoute exact path="/dashboard" component={Dashboard} allowedRoles={['ADMIN', 'PATRULLERO']} />
+          <ProtectedRoute exact path="/geofencing" component={GeoFencingPage} allowedRoles={['ADMIN', 'PATRULLERO']} />
+          <ProtectedRoute exact path="/history" component={RouteHistoryPage} allowedRoles={['ADMIN', 'PATRULLERO']} />
+          <ProtectedRoute exact path="/incidents" component={IncidentManagementPage} allowedRoles={['ADMIN', 'PATRULLERO']} />
 
           {/* ── Redirección raíz ─────────────────────────────────────────── */}
           <Route exact path="/">

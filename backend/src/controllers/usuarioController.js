@@ -56,8 +56,15 @@ const actualizarUsuario = async (req, res) => {
             return res.status(404).json({ mensaje: 'No se encontró el usuario que intentas actualizar' });
         }
         
-        // Guardamos los nuevos datos que nos llegaron en la petición
-        await usuario.update(req.body);
+        const { nombre_completo, correo, telefono, region, comuna } = req.body;
+        
+        await usuario.update({
+            nombre_completo,
+            correo,
+            telefono,
+            region,
+            comuna
+        });
         
         const usuarioActualizado = usuario.toJSON();
         delete usuarioActualizado.password_hash;

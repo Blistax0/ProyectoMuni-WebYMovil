@@ -1,53 +1,57 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
 
-// ─── Tipos ────────────────────────────────────────────────────────────────────
+//Tipos
 
 interface AuthContextValue {
   isAuthenticated: boolean;
-  login: () => void;
+  token: string | null;
+  role: string | null;                     // Guarda el rol ('ADMIN' o 'PATRULLERO')
+  login: (token: string, role: string) => void; // Ahora recibe el rol del backend
   logout: () => void;
 }
 
-// ─── Constantes ───────────────────────────────────────────────────────────────
-
 const AUTH_STORAGE_KEY = 'sigep_auth';
-
-// ─── Contexto ─────────────────────────────────────────────────────────────────
+const TOKEN_STORAGE_KEY = 'sigep_token';
+const ROLE_STORAGE_KEY = 'sigep_role';     // Llave para el rol
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
-// ─── Provider ─────────────────────────────────────────────────────────────────
-
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [token, setToken] = useState<string | null>(() => localStorage.getItem(TOKEN_STORAGE_KEY));
+  const [role, setRole] = useState<string | null>(() => localStorage.getItem(ROLE_STORAGE_KEY)); // 
+
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
-    // Inicializar desde localStorage para persistir la sesión al refrescar la página
-    return localStorage.getItem(AUTH_STORAGE_KEY) === 'true';
+    return localStorage.getItem(AUTH_STORAGE_KEY) === 'true' && !!localStorage.getItem(TOKEN_STORAGE_KEY);
   });
 
-  const login = useCallback(() => {
+  const login = useCallback((newToken: string, newRole: string) => {
     localStorage.setItem(AUTH_STORAGE_KEY, 'true');
+    localStorage.setItem(TOKEN_STORAGE_KEY, newToken);
+    localStorage.setItem(ROLE_STORAGE_KEY, newRole); //Guardamos el rol
+    setToken(newToken);
+    setRole(newRole);
     setIsAuthenticated(true);
   }, []);
 
   const logout = useCallback(() => {
     localStorage.removeItem(AUTH_STORAGE_KEY);
+    localStorage.removeItem(TOKEN_STORAGE_KEY);
+    localStorage.removeItem(ROLE_STORAGE_KEY); //Limpiamos el rol
+    setToken(null);
+    setRole(null);
     setIsAuthenticated(false);
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, token, role, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// ─── Hook de uso ──────────────────────────────────────────────────────────────
-
 export const useAuth = (): AuthContextValue => {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth debe usarse dentro de un <AuthProvider>');
-  }
+  if (!context) throw new Error('useAuth debe usarse dentro de un <AuthProvider>');
   return context;
 };
 
