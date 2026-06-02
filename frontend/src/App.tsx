@@ -52,8 +52,8 @@ const App: React.FC = () => (
           <PublicRoute exact path="/reset-password" component={ResetPassword} />
 
           {/* ── Rutas Protegidas (requieren sesión activa) ────────────────── */}
-          <ProtectedRoute exact path="/dashboard" component={Dashboard} allowedRoles={['ADMIN', 'PATRULLERO']} />
-          <ProtectedRoute exact path="/geofencing" component={GeoFencingPage} allowedRoles={['ADMIN', 'PATRULLERO']} />
+          <ProtectedRoute exact path="/dashboard" component={Dashboard} allowedRoles={['ADMIN', 'PATRULLERO']} /> {/* De momento lo deje para que puedan verlo ambos por temas de pruebas y saber que funciona bien */}
+          <ProtectedRoute exact path="/geofencing" component={GeoFencingPage} allowedRoles={['ADMIN', 'PATRULLERO']} /> {/* Lo mismo :p */}
           <ProtectedRoute exact path="/history" component={RouteHistoryPage} allowedRoles={['ADMIN', 'PATRULLERO']} />
           <ProtectedRoute exact path="/incidents" component={IncidentManagementPage} allowedRoles={['ADMIN', 'PATRULLERO']} />
 
