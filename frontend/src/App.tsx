@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { IonApp, IonRouterOutlet, setupIonicReact, IonSpinner } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
 /* Core CSS required for Ionic components to work properly */
@@ -22,47 +22,53 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
-/* Auth */
+/* Auth & Guards */
 import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './components/Auth/ProtectedRoute';
-import PublicRoute from './components/Auth/PublicRoute';
+import ProtectedRoute from './guards/ProtectedRoute';
+import PublicRoute from './guards/PublicRoute';
 
-/* Páginas Públicas */
-import Login from './pages/Login/Login';
-import Register from './pages/Register/Register';
-import ResetPassword from './pages/ResetPassword/ResetPassword';
+/* Páginas Públicas (Lazy Loading) */
+const Login = lazy(() => import('./pages/Login/Login'));
+const Register = lazy(() => import('./pages/Register/Register'));
+const ResetPassword = lazy(() => import('./pages/ResetPassword/ResetPassword'));
 
-/* Páginas Protegidas */
-import Dashboard from './pages/Dashboard/Dashboard';
-import GeoFencingPage from './pages/GeoFencing/GeoFencingPage';
-import RouteHistoryPage from './pages/RouteHistory/RouteHistoryPage';
-import IncidentManagementPage from './pages/IncidentManagement/IncidentManagementPage';
+/* Páginas Protegidas (Lazy Loading) */
+const Dashboard = lazy(() => import('./pages/Dashboard/Dashboard'));
+const GeoFencingPage = lazy(() => import('./pages/GeoFencing/GeoFencingPage'));
+const RouteHistoryPage = lazy(() => import('./pages/RouteHistory/RouteHistoryPage'));
+const IncidentManagementPage = lazy(() => import('./pages/IncidentManagement/IncidentManagementPage'));
 
 setupIonicReact();
+
+const LoadingFallback = () => (
+  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', width: '100vw' }}>
+    <IonSpinner name="crescent" />
+  </div>
+);
 
 const App: React.FC = () => (
   <AuthProvider>
     <IonApp>
       <IonReactRouter>
-        <IonRouterOutlet>
+        <Suspense fallback={<LoadingFallback />}>
+          <IonRouterOutlet>
+            {/* ── Rutas Públicas (solo accesibles sin sesión) ──────────────── */}
+            <PublicRoute exact path="/login" component={Login} />
+            <PublicRoute exact path="/register" component={Register} />
+            <PublicRoute exact path="/reset-password" component={ResetPassword} />
 
-          {/* ── Rutas Públicas (solo accesibles sin sesión) ──────────────── */}
-          <PublicRoute exact path="/login" component={Login} />
-          <PublicRoute exact path="/register" component={Register} />
-          <PublicRoute exact path="/reset-password" component={ResetPassword} />
+            {/* ── Rutas Protegidas (requieren sesión activa) ────────────────── */}
+            <ProtectedRoute exact path="/dashboard" component={Dashboard} allowedRoles={['ADMIN', 'PATRULLERO']} />
+            <ProtectedRoute exact path="/geofencing" component={GeoFencingPage} allowedRoles={['ADMIN', 'PATRULLERO']} />
+            <ProtectedRoute exact path="/history" component={RouteHistoryPage} allowedRoles={['ADMIN', 'PATRULLERO']} />
+            <ProtectedRoute exact path="/incidents" component={IncidentManagementPage} allowedRoles={['ADMIN', 'PATRULLERO']} />
 
-          {/* ── Rutas Protegidas (requieren sesión activa) ────────────────── */}
-          <ProtectedRoute exact path="/dashboard" component={Dashboard} allowedRoles={['ADMIN', 'PATRULLERO']} /> {/* De momento lo deje para que puedan verlo ambos por temas de pruebas y saber que funciona bien */}
-          <ProtectedRoute exact path="/geofencing" component={GeoFencingPage} allowedRoles={['ADMIN', 'PATRULLERO']} /> {/* Lo mismo :p */}
-          <ProtectedRoute exact path="/history" component={RouteHistoryPage} allowedRoles={['ADMIN', 'PATRULLERO']} />
-          <ProtectedRoute exact path="/incidents" component={IncidentManagementPage} allowedRoles={['ADMIN', 'PATRULLERO']} />
-
-          {/* ── Redirección raíz ─────────────────────────────────────────── */}
-          <Route exact path="/">
-            <Redirect to="/login" />
-          </Route>
-
-        </IonRouterOutlet>
+            {/* ── Redirección raíz ─────────────────────────────────────────── */}
+            <Route exact path="/">
+              <Redirect to="/login" />
+            </Route>
+          </IonRouterOutlet>
+        </Suspense>
       </IonReactRouter>
     </IonApp>
   </AuthProvider>

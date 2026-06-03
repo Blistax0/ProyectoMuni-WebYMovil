@@ -78,4 +78,20 @@
     opacity: 0.5;
     cursor: not-allowed;
   }
+
+  // DANGER (Red)
+  &.variant-danger {
+    background-color: #f12517;
+    color: #ffffff;
+    &:hover { background-color: #ff6459; }
+    &:active { background-color: #ba1409; }
+  }
+
+  // SUCCESS (Green)
+  &.variant-success {
+    background-color: #55a21e;
+    color: #ffffff;
+    &:hover { background-color: #7bca45; }
+    &:active { background-color: #3b7412; }
+  }
 }

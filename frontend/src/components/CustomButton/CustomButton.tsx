@@ -1,7 +1,7 @@
 import React from 'react';
 import './CustomButton.scss';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'select-orange' | 'select-blue';
+export type ButtonVariant = 'primary' | 'secondary' | 'select-orange' | 'select-blue' | 'danger' | 'success';
 export type ButtonSize = 'large' | 'medium' | 'compact';
 
 interface CustomButtonProps {

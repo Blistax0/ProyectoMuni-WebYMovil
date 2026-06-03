@@ -1,7 +1,7 @@
 import React from 'react';
 import { IonIcon } from '@ionic/react';
 import { closeOutline } from 'ionicons/icons';
-import ActionButton from '../Buttons/ActionButton';
+import CustomButton from '../CustomButton/CustomButton';
 import './UnifiedModal.scss';
 
 export type AlertType = 'panic' | 'incident' | 'geofence';
@@ -107,14 +107,16 @@ const UnifiedModal: React.FC<UnifiedModalProps> = ({ isOpen, onClose, data }) =>
           </div>
 
           <div className="modal-actions">
-            <ActionButton 
+            <CustomButton 
               text={data.primaryAction} 
-              color={data.type === 'incident' ? 'green' : 'red'} 
+              variant={data.type === 'incident' ? 'success' : 'danger'} 
+              size="medium"
               onClick={onClose}
             />
-            <ActionButton 
+            <CustomButton 
               text={data.secondaryAction || 'GESTIONAR CASO'} 
-              color="blue" 
+              variant="primary" 
+              size="medium"
               onClick={onClose}
             />
           </div>
