@@ -4,7 +4,7 @@
 
 - **Asignatura:** Ingeniería Web y Móvil (ICI 4247)
 - **Institución:** Pontificia Universidad Católica de Valparaíso (PUCV)
-- **Paralelo:** 02
+- **Paralelo:** 01
 - **Integrantes:**
   - Renato Valentín Mujica Vergara
   - Sofia Belén Mena Cortés
