@@ -1,4 +1,4 @@
-# Proyecto Entrega Parcial 1: Ingeniería Web y Móvil - Seguridad Municipal Santo Domingo
+# Proyecto Ingeniería Web y Móvil - Seguridad Municipal Santo Domingo
 
 ## 1. Información del Proyecto
 
