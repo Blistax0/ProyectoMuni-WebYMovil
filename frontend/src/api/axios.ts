@@ -31,7 +31,8 @@ API.interceptors.response.use(
       //Corregido: Limpiamos las llaves exactas que usa tu AuthContext
       localStorage.removeItem('sigep_auth');
       localStorage.removeItem('sigep_token');
-      localStorage.removeItem('sigep_role'); // También limpiamos el rol
+      localStorage.removeItem('sigep_role'); 
+      localStorage.removeItem('sigep_username');
     }
     return Promise.reject(error);
   }

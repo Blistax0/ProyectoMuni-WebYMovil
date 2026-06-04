@@ -9,7 +9,7 @@ import './Sidebar.scss';
 const Sidebar: React.FC = () => {
   const router = useIonRouter();
   const { pathname } = useLocation(); // Reactivo con IonReactRouter
-  const { logout } = useAuth();
+  const { logout, userName } = useAuth();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const menuItems = [
@@ -54,7 +54,7 @@ const Sidebar: React.FC = () => {
           onClick={() => setIsProfileOpen(true)}
         >
           <IonIcon icon={personOutline} />
-          Perfil de Usuario
+          {userName || 'Perfil de Usuario'}
         </button>
         <button className="footer-button logout" onClick={handleLogout}>
           <IonIcon icon={logOutOutline} />

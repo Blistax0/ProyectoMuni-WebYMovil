@@ -32,9 +32,10 @@ const Login: React.FC = () => {
       const response = await API.post('/auth/login', { correo: email, password });
       const { token, usuario } = response.data;
       const role = usuario.rol; // ADMIN o PATRULLERO
+      const userName = usuario.nombre_completo; // Obtenemos el nombre
 
-      // Pasamos ambos datos al contexto global
-      login(token, role);
+      // Pasamos los datos al contexto global
+      login(token, role, userName);
 
       // REDIRECCIÓN CONDICIONAL SEGÚN ROL 
       if (role === 'ADMIN') {
