@@ -242,7 +242,7 @@ Este documento detalla los endpoints expuestos por el backend para el correcto c
 * **Respuesta Exitosa (201 Created):** Retorna un mensaje de confirmación junto con el objeto del incidente creado, asignándole un estado "PENDIENTE" por defecto y sus respectivas marcas de tiempo.
 
 #### Evidencia de Prueba Funcional (POST):
-<img width="1267" height="792" alt="image" src="https://github.com/user-attachments/assets/33a68047-1dbd-4f28-a81d-d53f0a6ec941" />
+<img width="1279" height="793" alt="image" src="https://github.com/user-attachments/assets/a24e7af9-871f-48ba-865d-998a9e5f27fe" />
 
 
 
@@ -254,7 +254,8 @@ Este documento detalla los endpoints expuestos por el backend para el correcto c
 * **Respuesta Exitosa (200 OK):** Retorna un arreglo con todos los objetos de incidentes almacenados en MySQL, vinculados al patrullero correspondiente.
 
 #### Evidencia de Prueba Funcional (GET):
-![Evidencia de Consulta (GET)](fotos_documentacion/get.PNG)
+<img width="1268" height="785" alt="image" src="https://github.com/user-attachments/assets/8653c1fb-dedf-43aa-8668-52cf7e9274f0" />
+
 
 ---
 
