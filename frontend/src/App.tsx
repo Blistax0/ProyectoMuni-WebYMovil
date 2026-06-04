@@ -11,7 +11,7 @@ import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
 import '@ionic/react/css/typography.css';
 
-/* Optional CSS utils that can be commented out */
+/* Optional CSS utils */
 import '@ionic/react/css/padding.css';
 import '@ionic/react/css/float-elements.css';
 import '@ionic/react/css/text-alignment.css';
@@ -45,21 +45,50 @@ const App: React.FC = () => (
     <IonApp>
       <IonReactRouter>
         <IonRouterOutlet>
-          {/* ── Rutas Públicas (solo accesibles sin sesión) ──────────────── */}
-          <PublicRoute exact path="/login" component={Login} />
-          <PublicRoute exact path="/register" component={Register} />
-          <PublicRoute exact path="/reset-password" component={ResetPassword} />
 
-          {/* ── Rutas Protegidas (requieren sesión activa) ────────────────── */}
-          <ProtectedRoute exact path="/dashboard" component={Dashboard} allowedRoles={['ADMIN', 'PATRULLERO']} /> {/* De momento lo deje para que puedan verlo ambos por temas de pruebas y saber que funciona bien */}
-          <ProtectedRoute exact path="/geofencing" component={GeoFencingPage} allowedRoles={['ADMIN', 'PATRULLERO']} /> {/* Lo mismo :p, si no lo dejamos solo para admin */}
-          <ProtectedRoute exact path="/history" component={RouteHistoryPage} allowedRoles={['ADMIN', 'PATRULLERO']} />
-          <ProtectedRoute exact path="/incidents" component={IncidentManagementPage} allowedRoles={['ADMIN', 'PATRULLERO']} />
+          {/* Rutas Públicas */}
+          <Route exact path="/login">
+            <PublicRoute><Login /></PublicRoute>
+          </Route>
 
-          {/* ── Redirección raíz ─────────────────────────────────────────── */}
+          <Route exact path="/register">
+            <PublicRoute><Register /></PublicRoute>
+          </Route>
+
+          <Route exact path="/reset-password">
+            <PublicRoute><ResetPassword /></PublicRoute>
+          </Route>
+
+          {/* Rutas Protegidas */}
+          <Route exact path="/dashboard">
+            <ProtectedRoute allowedRoles={['ADMIN', 'PATRULLERO']}> {/* De momento lo deje para que puedan verlo ambos por temas de pruebas y saber que funciona bien */}
+              <Dashboard />
+            </ProtectedRoute>
+          </Route>
+
+          <Route exact path="/geofencing">
+            <ProtectedRoute allowedRoles={['ADMIN', 'PATRULLERO']}> {/* Lo mismo :p, si no lo dejamos solo para admin */}
+              <GeoFencingPage />
+            </ProtectedRoute>
+          </Route>
+
+          <Route exact path="/history">
+            <ProtectedRoute allowedRoles={['ADMIN', 'PATRULLERO']}>
+              <RouteHistoryPage />
+            </ProtectedRoute>
+          </Route>
+
+          <Route exact path="/incidents">
+            <ProtectedRoute allowedRoles={['ADMIN', 'PATRULLERO']}>
+              <IncidentManagementPage />
+            </ProtectedRoute>
+          </Route>
+
+          {/* Redirección raíz */}
           <Route exact path="/">
             <Redirect to="/login" />
           </Route>
+
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>
