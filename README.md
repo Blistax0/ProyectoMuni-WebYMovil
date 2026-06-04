@@ -50,7 +50,9 @@ Para desplegar el entorno de desarrollo y visualizar la aplicación navegable, s
    http://localhost:8100
    ```
 
-## 3. Documentación y Entregas Parciales (EP1.X)
+---
+
+## 3. Entrega Parcial 1: Frontend, UI/UX y Requerimientos (EP1.X)
 
 Este proyecto consiste en una plataforma integral diseñada para optimizar la seguridad pública mediante la digitalización del patrullaje, permitiendo una respuesta coordinada y basada en datos tácticos.
 
@@ -177,3 +179,51 @@ El sistema está desarrollado con el stack **Ionic + React**, manteniendo una ar
 
 
 ---
+
+## 5. Entrega Parcial 2: Documentación de Backend y API REST (EP2.X)
+
+Esta sección detalla la implementación del servidor, la base de datos relacional y los endpoints de la API construidos en Node.js con Express y Sequelize.
+
+---
+
+### 5.1 Instrucciones de Ejecución del Backend (EP 2.1)
+
+Para levantar el servidor localmente, siga estos pasos dentro de la carpeta `backend`:
+
+1. **Instalar las dependencias de Node:**
+   ```bash
+   npm install
+   ```
+
+2. **Configurar variables de entorno:** Cree un archivo llamado .env en la raíz de la carpeta backend con las credenciales de su conexión a MySQL local:
+   ```bash
+   PORT=3000
+   DB_HOST=localhost
+   DB_USER=root
+   DB_PASSWORD=su_contraseña
+   DB_NAME=sigep_db
+   ```
+
+3. **Iniciar el servidor en modo desarrollo:**
+   ```bash
+   npm run dev
+   ```
+
+   El servidor confirmará la conexión a la base de datos y la sincronización de las tablas.
+   
+---
+
+### 5.2 Modelo Relacional de Base de Datos (EP 2.2)
+
+El sistema utiliza MySQL como motor relacional, administrado a través del ORM Sequelize para garantizar la validación de integridad de los datos. La estructura cuenta con 4 entidades principales: Usuarios (Patrulleros/Admin), Incidentes, Geocercas y PosicionesGPS.
+
+<img width="928" height="713" alt="image" src="https://github.com/user-attachments/assets/0f87a2dd-edc2-4e46-94d3-53c8afe972d0" />
+
+---
+
+5.3 Documentación Técnica de Consumo de API (EP 2.3 y EP 2.7)
+
+
+
+---
+
