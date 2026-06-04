@@ -224,6 +224,100 @@ El sistema utiliza MySQL como motor relacional, administrado a través del ORM S
 5.3 Documentación Técnica de Consumo de API (EP 2.3 y EP 2.7)
 
 
+# Documentación Técnica de Consumo de API (SIGEP)
 
+Este documento detalla los endpoints expuestos por el backend para el correcto consumo desde el frontend (Ionic + React).
+
+## Base URL
+`http://localhost:3000/api`
+
+---
+
+## 1. Módulo de Incidentes
+
+### A. Registrar nuevo incidente
+* **Ruta:** `/incidentes`
+* **Método:** `POST`
+* **Formato del Cuerpo:** Requiere las variables de texto para el tipo y descripción, números para las coordenadas y el ID del patrullero correspondiente.
+* **Respuesta Exitosa (201 Created):** Retorna un mensaje de confirmación junto con el objeto del incidente creado, asignándole un estado "PENDIENTE" por defecto y sus respectivas marcas de tiempo.
+
+#### Evidencia de Prueba Funcional (POST):
+<img width="1267" height="792" alt="image" src="https://github.com/user-attachments/assets/33a68047-1dbd-4f28-a81d-d53f0a6ec941" />
+
+
+
+---
+
+### B. Listar todos los incidentes
+* **Ruta:** `/incidentes`
+* **Método:** `GET`
+* **Respuesta Exitosa (200 OK):** Retorna un arreglo con todos los objetos de incidentes almacenados en MySQL, vinculados al patrullero correspondiente.
+
+#### Evidencia de Prueba Funcional (GET):
+![Evidencia de Consulta (GET)](fotos_documentacion/get.PNG)
+
+---
+
+### C. Actualizar estado de un incidente 
+* **Ruta:** `/incidentes/:id`
+* **Método:** `PUT`
+* **Formato del Cuerpo:** Recibe el nuevo estado de resolución del caso (ej: "EN_PROCESO" o "RESUELTO").
+* **Respuesta Exitosa (200 OK):** Retorna un mensaje confirmando la actualización del incidente en la base de datos.
+
+---
+
+### D. Eliminar o archivar un incidente 
+* **Ruta:** `/incidentes/:id`
+* **Método:** `DELETE`
+* **Respuesta Exitosa (200 OK):** Retorna un mensaje confirmando la eliminación correcta del registro.
+
+---
+
+## 2. Módulo de Geocercas 
+
+### A. Crear zona de vigilancia
+* **Ruta:** `/geocercas`
+* **Método:** `POST`
+* **Formato del Cuerpo:** Requiere el nombre de la zona, un arreglo de coordenadas geográficas en formato de texto adaptado para polígonos, el color de borde asignado y el estado de activación en formato numérico/booleano.
+
+---
+
+### B. Listar geocercas
+* **Ruta:** `/geocercas`
+* **Método:** `GET`
+* **Respuesta Exitosa (200 OK):** Retorna el listado completo de los perímetros activos controlados actualmente por el sistema municipal.
+
+---
+
+### C. Modificar perímetro de geocerca
+* **Ruta:** `/geocercas/:id`
+* **Método:** `PUT`
+* **Formato del Cuerpo:** Permite actualizar las coordenadas, cambiar el nombre de la zona o modificar su estado de activación.
+
+---
+
+### D. Eliminar geocerca 
+* **Ruta:** `/geocercas/:id`
+* **Método:** `DELETE`
+* **Respuesta Exitosa (200 OK):** Retorna la confirmación de que la geocerca ha sido dada de baja del sistema correctamente.
+
+---
+
+## 3. Módulo de Usuarios 
+
+### A. Gestión de Usuarios y Accesos
+* **Rutas disponibles:**
+  * `GET /`: Endpoints dedicados para listar de forma ordenada a todos los patrulleros que se encuentran activos en el sistema municipal.
+  * `POST /`: Permite registrar nuevos usuarios en el sistema enviando los datos personales requeridos (rut, nombre completo, correo, teléfono, región, comuna, hash de contraseña, rol asignado y estado).
+  * `PUT /:id`: Diseñado para actualizar el rango, contraseñas de seguridad o los datos de contacto del personal municipal (Exigencia Rúbrica).
+  * `DELETE /:id`: Permite dar de baja o desactivar las cuentas del personal desvinculado de las rutas (Exigencia Rúbrica).
+
+---
+
+## 4. Módulo de Posiciones GPS 
+
+### A. Envío de ubicación en tiempo real
+* **Rutas disponibles:**
+  * `POST /`: Recibe de forma continua y asíncrona las coordenadas geográficas (latitud, longitud, velocidad estimada en km/h y el ID del patrullero) enviadas directamente por el dispositivo móvil del operario que se encuentra en ruta activa.
 ---
 
