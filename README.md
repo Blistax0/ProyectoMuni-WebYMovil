@@ -233,14 +233,23 @@ Este documento detalla los endpoints expuestos por el backend para el correcto c
 
 ---
 
-## 1. Módulo de Incidentes
+## 1. Módulo de Incidentes 
 
 ### A. Registrar nuevo incidente
 * **Ruta:** `/incidentes`
 * **Método:** `POST`
-* **Formato del Cuerpo:** Requiere las variables de texto para el tipo y descripción, números para las coordenadas y el ID del patrullero correspondiente.
-* **Respuesta Exitosa (201 Created):** Retorna un mensaje de confirmación junto con el objeto del incidente creado, asignándole un estado "PENDIENTE" por defecto y sus respectivas marcas de tiempo.
+* **Formato del Cuerpo (JSON):**
 
+```json
+{
+  "tipo_incidente": "string",
+  "nivel_gravedad": "string",
+  "latitud": "number",
+  "longitud": "number",
+  "descripcion": "string",
+  "patrullero_id": "number"
+}
+```
 #### Evidencia de Prueba Funcional (POST):
 <img width="1279" height="793" alt="image" src="https://github.com/user-attachments/assets/a24e7af9-871f-48ba-865d-998a9e5f27fe" />
 
@@ -252,7 +261,21 @@ Este documento detalla los endpoints expuestos por el backend para el correcto c
 * **Ruta:** `/incidentes`
 * **Método:** `GET`
 * **Respuesta Exitosa (200 OK):** Retorna un arreglo con todos los objetos de incidentes almacenados en MySQL, vinculados al patrullero correspondiente.
+```json
 
+  {
+    "id": 5,
+    "tipo_incidente": "Falta de luminaria costera",
+    "nivel_gravedad": "Alta",
+    "latitud": -33.6361,
+    "longitud": -71.6214,
+    "descripcion": "Sector costero sur sin iluminación pública",
+    "estado_resolucion": "PENDIENTE",
+    "patrullero_id": 1,
+    "createdAt": "2026-06-04T03:06:05.627Z",
+    "updatedAt": "2026-06-04T03:06:05.627Z"
+  }
+```
 #### Evidencia de Prueba Funcional (GET):
 <img width="1268" height="785" alt="image" src="https://github.com/user-attachments/assets/8653c1fb-dedf-43aa-8668-52cf7e9274f0" />
 
@@ -280,7 +303,18 @@ Este documento detalla los endpoints expuestos por el backend para el correcto c
 * **Ruta:** `/geocercas`
 * **Método:** `POST`
 * **Formato del Cuerpo:** Requiere el nombre de la zona, un arreglo de coordenadas geográficas en formato de texto adaptado para polígonos, el color de borde asignado y el estado de activación en formato numérico/booleano.
-
+```json
+  {
+  "nombre_zona": "Sector Norte - Plaza",
+  "coordenadas_poligono": [
+    [-33.6310, -71.6310],
+    [-33.6310, -71.6350],
+    [-33.6350, -71.6350],
+    [-33.6350, -71.6310]
+  ],
+  "color_borde": "#00FF00"
+}
+```
 ---
 
 ### B. Listar geocercas
@@ -296,6 +330,12 @@ Este documento detalla los endpoints expuestos por el backend para el correcto c
 * **Formato del Cuerpo:** Permite actualizar las coordenadas, cambiar el nombre de la zona o modificar su estado de activación.
 
 ---
+```json
+{
+  "nombre_zona": "Sector Norte - Plaza Actualizada",
+  "color_borde": "#FF0000"
+}
+```
 
 ### D. Eliminar geocerca 
 * **Ruta:** `/geocercas/:id`
@@ -303,6 +343,8 @@ Este documento detalla los endpoints expuestos por el backend para el correcto c
 * **Respuesta Exitosa (200 OK):** Retorna la confirmación de que la geocerca ha sido dada de baja del sistema correctamente.
 
 ---
+
+
 
 ## 3. Módulo de Usuarios 
 
