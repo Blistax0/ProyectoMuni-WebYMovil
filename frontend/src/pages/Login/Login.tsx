@@ -35,7 +35,7 @@ const Login: React.FC = () => {
       const userName = usuario.nombre_completo; // Obtenemos el nombre
 
       // Pasamos los datos al contexto global
-      login(token, role, userName);
+      login(token, role, userName, usuario);
 
       // REDIRECCIÓN CONDICIONAL SEGÚN ROL 
       if (role === 'ADMIN') {

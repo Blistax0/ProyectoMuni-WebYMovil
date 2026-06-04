@@ -1,6 +1,7 @@
 import React from 'react';
 import { IonIcon } from '@ionic/react';
 import { closeOutline, person } from 'ionicons/icons';
+import { useAuth } from '../../context/AuthContext';
 import './UserProfileModal.scss';
 
 interface UserProfileModalProps {
@@ -9,6 +10,8 @@ interface UserProfileModalProps {
 }
 
 const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) => {
+  const { user } = useAuth();
+  
   if (!isOpen) return null;
 
   return (
@@ -30,27 +33,27 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
           <div className="info-grid">
             <div className="info-item">
               <label>Nombre</label>
-              <p>Pepe López Ramírez</p>
+              <p>{user?.nombre_completo || 'No especificado'}</p>
             </div>
             <div className="info-item">
               <label>Correo Electrónico</label>
-              <p className="email">pepito@gmail.com</p>
+              <p className="email">{user?.correo || 'No especificado'}</p>
             </div>
             <div className="info-item">
               <label>Región</label>
-              <p>Valparaíso</p>
+              <p>{user?.region || 'No especificada'}</p>
             </div>
             <div className="info-item">
               <label>RUT</label>
-              <p>21.627.416-7</p>
+              <p>{user?.rut || 'No especificado'}</p>
             </div>
             <div className="info-item">
               <label>Número de teléfono</label>
-              <p>+56 9 62930162</p>
+              <p>{user?.telefono || 'No especificado'}</p>
             </div>
             <div className="info-item">
               <label>Comuna</label>
-              <p>Santo Domingo</p>
+              <p>{user?.comuna || 'No especificada'}</p>
             </div>
           </div>
         </div>
