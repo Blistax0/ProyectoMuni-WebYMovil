@@ -62,35 +62,43 @@ Este proyecto consiste en una plataforma integral diseñada para optimizar la se
 
 #### Requerimientos Funcionales (RF)
 
-Se han definido 7 requerimientos críticos bajo estándares de prevención situacional:
+Se han definido 7 requerimientos críticos bajo estándares de prevención situacional. Se incluye la definición técnica de los conceptos clave para evitar ambigüedades:
 
-| Requerimiento                                 | Justificación Técnica y Operativa                                                                                                |
-| :-------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
-| **Registro de Incidentes Georreferenciados**  | Captura evidencia multimedia (fotos) vinculada automáticamente a coordenadas GPS exactas, eliminando ambigüedad en los reportes. |
-| **Monitoreo de Flota en Tiempo Real**         | Dashboard web para visualizar ubicación y estado de unidades, fundamental para la asignación de la patrulla más cercana.         |
-| **Gestión de Geo-cercas**                     | Límites de vigilancia virtuales para asegurar la cobertura en zonas residenciales y costeras críticas.                           |
-| **Alertas Operativas Automáticas**            | Notificaciones inmediatas por exceso de velocidad o abandono de perímetro asignado.                                              |
-| **Historial y Reproducción de Rutas**         | Auditoría y análisis de recorridos pasados para evaluar la efectividad del servicio.                                             |
-| **Protocolo de Emergencia (Botón de Pánico)** | Alerta sonora y de ubicación inmediata a la central con un solo toque para la seguridad del personal.                            |
-| **Trazabilidad y Derivación de Casos**        | Seguimiento de incidentes hasta su resolución, facilitando la derivación a departamentos como luminarias o aseo.                 |
+| Requerimiento | Especificación y Justificación Operativa |
+| :--- | :--- |
+| **Registro de Incidentes Georreferenciados** | Captura de evidencia multimedia vinculada automáticamente a coordenadas GPS exactas. Elimina la ambigüedad en los reportes manuales. |
+| **Monitoreo de Flota en Tiempo Real** | Visualización mediante un **Dashboard (Panel de Control Visual)** que consolida la ubicación y estado de las unidades en una sola pantalla, fundamental para despachar la patrulla más cercana. |
+| **Gestión de Geo-cercas (Perímetros Virtuales)** | Capacidad del administrador para dibujar polígonos virtuales sobre el mapa digital, estableciendo límites de vigilancia estrictos para áreas residenciales y costeras. |
+| **Alertas Operativas Automáticas** | Notificaciones push inmediatas enviadas al sistema cuando un vehículo excede el límite de velocidad o abandona su perímetro (geo-cerca) asignado. |
+| **Historial y Reproducción de Rutas** | Sistema de **Auditoría (Registro histórico inmutable)** que guarda los trayectos pasados para evaluar la efectividad del servicio y transparentar el uso de recursos. |
+| **Protocolo de Emergencia (Botón de Pánico)** | Interfaz de un solo toque en la app móvil que envía una alerta sonora y de ubicación inmediata a la central para proteger la integridad del patrullero. |
+| **Trazabilidad y Derivación de Casos** | Seguimiento del estado del incidente (Pendiente, En Proceso, Resuelto), facilitando la derivación a otros departamentos municipales (ej: luminarias o aseo). |
 
 #### Requerimientos No Funcionales (RNF)
 
-- **Rendimiento:** Latencia GPS < 2s para un seguimiento fluido en emergencias.
-- **Seguridad:** Autenticación mediante **JWT (JSON Web Tokens)** para proteger la integridad de datos sensibles de seguridad pública.
-- **Usabilidad (UI/UX Situacional):** Interfaz de alto contraste y componentes de gran escala para uso óptimo bajo luz solar y en movimiento.
+* **Rendimiento y Disponibilidad:** El sistema debe registrar una latencia GPS menor a 2 segundos bajo condiciones de red 4G/5G. El backend debe asegurar un *uptime* (tiempo en línea) del 99.9% para garantizar cobertura de emergencias 24/7.
+* **Seguridad de la Información:** Autenticación mediante tokens JWT. Las credenciales de los usuarios deben estar encriptadas utilizando el algoritmo `bcrypt`. La base de datos debe contar con validación de inputs para prevenir ataques de inyección SQL.
+* **Usabilidad Situacional:** La aplicación móvil debe poseer un contraste de color validado por normas WCAG (AAA) y componentes táctiles de gran escala (mínimo 48x48 dp) para asegurar la precisión del patrullero mientras está en movimiento o bajo luz solar directa.
 
 ---
 
 ### 3.2 Justificación del Problema (EP 1.2)
 
-El municipio de Santo Domingo enfrenta desafíos de seguridad en sectores residenciales y costeros con baja organización vecinal y focos de incivilidades. Actualmente, la gestión depende de bitácoras físicas o planillas Excel, lo que genera:
+#### Contexto y Necesidad
+La comuna de Santo Domingo se caracteriza por poseer una extensa área rural, un largo borde costero y un alto porcentaje de segundas viviendas (población flotante en época estival). Según informes recientes de seguridad pública municipal, los principales desafíos radican en el control de incivilidades, robos en lugar no habitado y la necesidad de una rápida respuesta preventiva ante la limitación de dotación policial (Carabineros).
 
-- **Invisibilidad operativa:** Falta de control sobre la ubicación de las unidades.
-- **Pérdida de información:** Reportes manuales propensos a errores.
-- **Respuesta lenta:** Dificultad para coordinar recursos en tiempo real.
+Actualmente, la gestión de patrullaje depende en gran medida de comunicación radial no estructurada y bitácoras físicas, lo que genera problemas críticos:
+1. **Invisibilidad operativa:** La central no conoce la ubicación exacta de sus móviles en tiempo real.
+2. **Pérdida de evidencia:** Reportes manuales propensos a errores y sin respaldo fotográfico asociado a coordenadas.
+3. **Respuesta no optimizada:** Dificultad para aplicar estrategias de "Prevención Situacional" al no contar con mapas de calor o métricas de los delitos.
 
-La digitalización permite una respuesta basada en georreferenciación táctica inmediata, mejorando la eficiencia y la percepción de seguridad ciudadana.
+La digitalización del SIGEP soluciona esto mediante un enfoque de georreferenciación táctica, permitiendo que la Municipalidad despliegue sus recursos de manera inteligente y auditable.
+
+#### Perfiles de Usuario (Actores del Sistema)
+El sistema ha sido diseñado exclusivamente para el personal interno de Seguridad Municipal, dividiéndose en dos roles interactuantes:
+
+1. **El Patrullero (Usuario Móvil):** Funcionario en terreno (a pie o en vehículo). Requiere interfaces rápidas, botones grandes y cero distracciones. Es el principal generador de datos (ubicación GPS y reportes de incidentes).
+2. **El Administrador / Operador de Central (Usuario Web):** Personal de oficina a cargo del despacho y monitoreo. Requiere una vista panorámica (mapa interactivo), capacidad de gestión de casos y herramientas de análisis territorial (Geo-cercas).
 
 ---
 
