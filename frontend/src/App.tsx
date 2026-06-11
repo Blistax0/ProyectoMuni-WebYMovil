@@ -20,23 +20,23 @@ import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
 /* Theme variables */
-import './theme/variables.css';
+import './core/theme/variables.css';
 
 /* Auth & Guards */
-import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './guards/ProtectedRoute';
-import PublicRoute from './guards/PublicRoute';
+import { AuthProvider } from './features/auth/domain/AuthContext';
+import ProtectedRoute from './core/router/guards/ProtectedRoute';
+import PublicRoute from './core/router/guards/PublicRoute';
 
 /* Páginas Públicas */
-import Login from './pages/Login/Login';
-import Register from './pages/Register/Register';
-import ResetPassword from './pages/ResetPassword/ResetPassword';
+import Login from './features/auth/presentation/screens/Login/Login';
+import Register from './features/auth/presentation/screens/Register/Register';
+import ResetPassword from './features/auth/presentation/screens/ResetPassword/ResetPassword';
 
 /* Páginas Protegidas */
-import Dashboard from './pages/Dashboard/Dashboard';
-import GeoFencingPage from './pages/GeoFencing/GeoFencingPage';
-import RouteHistoryPage from './pages/RouteHistory/RouteHistoryPage';
-import IncidentManagementPage from './pages/IncidentManagement/IncidentManagementPage';
+import Dashboard from './features/dashboard/presentation/screens/Dashboard/Dashboard';
+import GeoFencingPage from './features/geofencing/presentation/screens/GeoFencing/GeoFencingPage';
+import RouteHistoryPage from './features/tracking/presentation/screens/RouteHistory/RouteHistoryPage';
+import IncidentManagementPage from './features/incidents/presentation/screens/IncidentManagement/IncidentManagementPage';
 
 setupIonicReact();
 
