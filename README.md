@@ -393,3 +393,23 @@ Este documento detalla los endpoints expuestos por el backend para el correcto c
   - `POST /`: Recibe de forma continua y asíncrona las coordenadas geográficas (latitud, longitud, velocidad estimada en km/h y el ID del patrullero) enviadas directamente por el dispositivo móvil del operario que se encuentra en ruta activa.
 
 ---
+
+## 6. Arquitectura del Software (Clean Architecture)
+
+Se ha refactorizado el proyecto completo para cumplir con los estándares de Clean Architecture, tal como en el repositorio guia. (No se que mas poner :p)
+
+### Estructura de Capas por Feature
+
+Tanto el Frontend como el Backend están divididos por Features (Dominios de negocio como Auth, Usuarios, Geocercas), y cada Feature contiene la siguiente estructura:
+
+- **data/ (Capa de Datos):** Contiene las implementaciones técnicas de los repositorios.
+  - En el Backend: Contiene la conexión real con la base de datos MySQL vía Sequelize (ej. `sequelizeUsuariosRepository.ts`).
+  - En el Frontend: Contiene la conexión HTTP real vía Axios (ej. `axiosAuthRepository.ts`).
+
+- **domain/ (Capa de Dominio):** Contiene el núcleo de la lógica.
+  - `useCases/`: Archivos con Casos de Uso específicos (ej. `iniciarSesionUseCase.ts`, `crearUsuarioUseCase.ts`). Son funciones que guian las reglas del sistema y son totalmente independientes del framework.
+  - `repositories/`: Interfaces y contratos TypeScript que dictan cómo la capa de dominio espera recibir o guardar datos, sin importar la tecnología subyacente.
+
+- **presentation/ (Capa de Presentación):** La capa de visualización e interacción.
+  - En el Backend: Son los Controladores de Express, quienes simplemente reciben el `req.body`, inyectan el repositorio de Sequelize en el Caso de Uso, y retornan el `res.json`.
+  - En el Frontend: Son las pantallas de React/Ionic y componentes de UI que ejecutan los Casos de Uso para reaccionar a las interacciones del usuario.

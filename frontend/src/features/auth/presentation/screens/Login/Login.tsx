@@ -4,7 +4,8 @@ import { mailOutline, lockClosedOutline } from 'ionicons/icons';
 import InputField from '../../../../../core/presentation/components/InputField/InputField';
 import CustomButton from '../../../../../core/presentation/components/CustomButton/CustomButton';
 import { useAuth } from '../../../../../features/auth/domain/AuthContext';
-import API from '../../../../../core/config/axios'; // Importar instancia de Axios sin errores
+import { iniciarSesionUseCase } from '../../../domain/useCases/iniciarSesionUseCase';
+import { axiosAuthRepository } from '../../../data/repositories/axiosAuthRepository';
 import './Login.scss';
 
 const Login: React.FC = () => {
@@ -29,8 +30,9 @@ const Login: React.FC = () => {
     }
 
     try {
-      const response = await API.post('/auth/login', { correo: email, password });
-      const { token, usuario } = response.data;
+      // Inyección de dependencias: Le pasamos el repositorio de Axios al Caso de Uso
+      const data = await iniciarSesionUseCase(axiosAuthRepository, email, password);
+      const { token, usuario } = data;
       const role = usuario.rol; // ADMIN o PATRULLERO
       const userName = usuario.nombre_completo; // Obtenemos el nombre
 

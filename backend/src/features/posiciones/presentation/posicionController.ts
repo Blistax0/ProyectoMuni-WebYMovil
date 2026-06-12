@@ -1,24 +1,19 @@
-import { Request, Response, NextFunction } from 'express';
-import PosicionGPS from '../../../features/posiciones/data/PosicionGPS';
 
-// POST: Guardar una nueva coordenada enviada por el celular del patrullero
-const guardarPosicion = async (req: Request, res: Response) => {
+import { Request, Response } from 'express';
+import { sequelizePosicionesRepository } from '../data/repositories/sequelizePosicionesRepository';
+import { guardarPosicionUseCase } from '../domain/useCases/guardarPosicionUseCase';
+import { obtenerHistorialUseCase } from '../domain/useCases/obtenerHistorialUseCase';
+
+export const guardarPosicion = async (req: Request, res: Response) => {
     try {
-        const nuevaPosicion = await PosicionGPS.create(req.body);
-        res.status(201).json({ mensaje: 'Coordenada GPS guardada', data: nuevaPosicion });
-    } catch (error: any) {
-        res.status(400).json({ mensaje: 'Error al guardar posición', error: error.message });
-    }
+        const result = await guardarPosicionUseCase(sequelizePosicionesRepository, req.body);
+        res.status(201).json({ mensaje: 'Coordenada GPS guardada', data: result });
+    } catch (error: any) { res.status(400).json({ mensaje: 'Error al guardar posición', error: error.message }); }
 };
 
-// GET: Obtener el historial completo para dibujarlo en el mapa
-const obtenerHistorial = async (req: Request, res: Response) => {
+export const obtenerHistorial = async (req: Request, res: Response) => {
     try {
-        const historial = await PosicionGPS.findAll();
-        res.status(200).json(historial);
-    } catch (error: any) {
-        res.status(500).json({ mensaje: 'Error interno', error: error.message });
-    }
+        const result = await obtenerHistorialUseCase(sequelizePosicionesRepository);
+        res.status(200).json(result);
+    } catch (error: any) { res.status(500).json({ mensaje: 'Error interno', error: error.message }); }
 };
-
-export { guardarPosicion, obtenerHistorial  };

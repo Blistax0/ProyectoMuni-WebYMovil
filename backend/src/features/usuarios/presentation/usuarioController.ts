@@ -1,103 +1,50 @@
-import { Request, Response, NextFunction } from 'express';
-import Usuario from '../../../features/usuarios/data/Usuario';
 
-// POST: Crear un nuevo usuario
-const crearUsuario = async (req: Request, res: Response) => {
+import { Request, Response } from 'express';
+import { sequelizeUsuariosRepository } from '../data/repositories/sequelizeUsuariosRepository';
+import { crearUsuarioUseCase } from '../domain/useCases/crearUsuarioUseCase';
+import { obtenerUsuariosUseCase } from '../domain/useCases/obtenerUsuariosUseCase';
+import { obtenerUsuarioPorIdUseCase } from '../domain/useCases/obtenerUsuarioPorIdUseCase';
+import { actualizarUsuarioUseCase } from '../domain/useCases/actualizarUsuarioUseCase';
+import { eliminarUsuarioUseCase } from '../domain/useCases/eliminarUsuarioUseCase';
+
+export const crearUsuario = async (req: Request, res: Response) => {
     try {
-        const nuevoUsuario = await Usuario.create(req.body);
-        
-        // Esto para evitar enviar la contraseña encriptada en la respuesta por seguridad
-        const usuarioSinPassword = nuevoUsuario.toJSON();
-        delete usuarioSinPassword.password_hash;
+        const result = await crearUsuarioUseCase(sequelizeUsuariosRepository, req.body);
+        res.status(201).json({ mensaje: 'Usuario registrado exitosamente', data: result });
+    } catch (error: any) { res.status(400).json({ mensaje: 'No pudimos registrar al usuario. Verifica los datos.' }); }
+};
 
-        res.status(201).json({ mensaje: 'Usuario registrado exitosamente', data: usuarioSinPassword });
+export const obtenerUsuarios = async (req: Request, res: Response) => {
+    try {
+        const result = await obtenerUsuariosUseCase(sequelizeUsuariosRepository);
+        res.status(200).json(result);
+    } catch (error: any) { res.status(500).json({ mensaje: 'Hubo un problema al obtener los usuarios' }); }
+};
+
+export const obtenerUsuarioPorId = async (req: Request, res: Response) => {
+    try {
+        const result = await obtenerUsuarioPorIdUseCase(sequelizeUsuariosRepository, req.params.id as string);
+        if (!result) return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+        res.status(200).json(result);
+    } catch (error: any) { res.status(500).json({ mensaje: 'Hubo un problema al buscar el usuario' }); }
+};
+
+export const actualizarUsuario = async (req: Request, res: Response) => {
+    try {
+        const result = await actualizarUsuarioUseCase(sequelizeUsuariosRepository, req.params.id as string, req.body);
+        res.status(200).json({ mensaje: 'Datos del usuario actualizados correctamente', data: result });
     } catch (error: any) {
-        console.error('Error al crear usuario:', error);
-        res.status(400).json({ mensaje: 'No pudimos registrar al usuario. Verifica los datos enviados.' });
+        if (error.message.includes('NOT_FOUND')) return res.status(404).json({ mensaje: error.message.split(': ')[1] });
+        res.status(400).json({ mensaje: 'No pudimos actualizar la información.' });
     }
 };
 
-// GET: Obtener todos los usuarios activos
-const obtenerUsuarios = async (req: Request, res: Response) => {
+export const eliminarUsuario = async (req: Request, res: Response) => {
     try {
-        const usuarios = await Usuario.findAll({ 
-            where: { estado: true },
-            attributes: { exclude: ['password_hash'] } 
-        });
-        res.status(200).json(usuarios);
-    } catch (error: any) {
-        console.error('Error al listar usuarios:', error);
-        res.status(500).json({ mensaje: 'Hubo un problema en el servidor al intentar obtener los usuarios' });
-    }
-};
-
-// GET: Obtener un solo usuario por su ID
-const obtenerUsuarioPorId = async (req: Request, res: Response) => {
-    try {
-        const usuario = await Usuario.findByPk(req.params.id as string, {
-            attributes: { exclude: ['password_hash'] }
-        });
-        
-        if (!usuario) {
-            return res.status(404).json({ mensaje: 'Usuario no encontrado' });
-        }
-        res.status(200).json(usuario);
-    } catch (error: any) {
-        console.error('Error al buscar usuario por ID:', error);
-        res.status(500).json({ mensaje: 'Hubo un problema en el servidor al buscar el usuario' });
-    }
-};
-
-// PUT: Actualizar datos de un usuario
-const actualizarUsuario = async (req: Request, res: Response) => {
-    try {
-        const usuario = await Usuario.findByPk(req.params.id as string);
-        if (!usuario) {
-            return res.status(404).json({ mensaje: 'No se encontró el usuario que intentas actualizar' });
-        }
-        
-        const { nombre_completo, correo, telefono, region, comuna } = req.body;
-        
-        await usuario.update({
-            nombre_completo,
-            correo,
-            telefono,
-            region,
-            comuna
-        });
-        
-        const usuarioActualizado = usuario.toJSON();
-        delete usuarioActualizado.password_hash;
-
-        res.status(200).json({ mensaje: 'Datos del usuario actualizados correctamente', data: usuarioActualizado });
-    } catch (error: any) {
-        console.error('Error al actualizar usuario:', error);
-        res.status(400).json({ mensaje: 'No pudimos actualizar la información. Revisa los datos enviados.' });
-    }
-};
-
-// DELETE: Eliminar un usuario
-const eliminarUsuario = async (req: Request, res: Response) => {
-    try {
-        const usuario = await Usuario.findByPk(req.params.id as string);
-        if (!usuario) {
-            return res.status(404).json({ mensaje: 'Usuario no encontrado' });
-        }
-        // En lugar de borrarlo de la base de datos, lo desactivamos
-        (usuario as any).estado = false;
-        await usuario.save();
-        
+        await eliminarUsuarioUseCase(sequelizeUsuariosRepository, req.params.id as string);
         res.status(200).json({ mensaje: 'Usuario dado de baja exitosamente' });
     } catch (error: any) {
-        console.error('Error al eliminar usuario:', error);
-        res.status(500).json({ mensaje: 'Hubo un error en el servidor al intentar dar de baja al usuario' });
+        if (error.message.includes('NOT_FOUND')) return res.status(404).json({ mensaje: error.message.split(': ')[1] });
+        res.status(500).json({ mensaje: 'Hubo un error al intentar dar de baja al usuario' });
     }
-};
-
-export { 
-    crearUsuario, 
-    obtenerUsuarios, 
-    obtenerUsuarioPorId, 
-    actualizarUsuario, 
-    eliminarUsuario 
 };
