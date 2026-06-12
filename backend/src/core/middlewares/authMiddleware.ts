@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
 const verificarToken = (req, res, next) => {
     // Leer el header Authorization

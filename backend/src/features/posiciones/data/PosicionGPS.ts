@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize');
-const { sequelize } = require('../../../core/database/database');
+import { DataTypes  } from 'sequelize';
+import { sequelize  } from '../../../core/database/database';
 
 const PosicionGPS = sequelize.define('PosicionGPS', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
@@ -11,4 +11,4 @@ const PosicionGPS = sequelize.define('PosicionGPS', {
     timestamps: true // Esto nos dará la hora y minuto exacto en que pasó por ahí
 });
 
-module.exports = PosicionGPS;
+export default PosicionGPS;

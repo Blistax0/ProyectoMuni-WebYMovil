@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize');
-const { sequelize } = require('../../../core/database/database');
+import { DataTypes  } from 'sequelize';
+import { sequelize  } from '../../../core/database/database';
 
 const Incidente = sequelize.define('Incidente', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
@@ -15,4 +15,4 @@ const Incidente = sequelize.define('Incidente', {
     timestamps: true 
 });
 
-module.exports = Incidente;
+export default Incidente;

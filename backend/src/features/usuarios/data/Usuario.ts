@@ -1,6 +1,6 @@
-const { DataTypes } = require('sequelize');
-const { sequelize } = require('../../../core/database/database'); 
-const bcrypt = require('bcrypt');
+import { DataTypes  } from 'sequelize';
+import { sequelize  } from '../../../core/database/database'; 
+import bcrypt from 'bcrypt';
 
 const Usuario = sequelize.define('Usuario', {
     id: { 
@@ -65,4 +65,4 @@ const Usuario = sequelize.define('Usuario', {
     }
 });
 
-module.exports = Usuario;
+export default Usuario;

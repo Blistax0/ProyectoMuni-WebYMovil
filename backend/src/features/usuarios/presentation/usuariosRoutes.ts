@@ -1,14 +1,13 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { 
-    crearUsuario, 
+import { crearUsuario, 
     obtenerUsuarios, 
     obtenerUsuarioPorId, 
     actualizarUsuario, 
     eliminarUsuario 
-} = require('../../../features/usuarios/presentation/usuarioController');
-const { validarCreacionUsuario } = require('../../../features/usuarios/domain/usuarioValidator');
-const { verificarToken } = require('../../../core/middlewares/authMiddleware');
+ } from '../../../features/usuarios/presentation/usuarioController';
+import { validarCreacionUsuario  } from '../../../features/usuarios/domain/usuarioValidator';
+import { verificarToken  } from '../../../core/middlewares/authMiddleware';
 
 // Rutas generales (No necesitan ID)
 router.post('/', validarCreacionUsuario, crearUsuario);
@@ -19,4 +18,4 @@ router.get('/:id', verificarToken, obtenerUsuarioPorId);
 router.put('/:id', verificarToken, actualizarUsuario);
 router.delete('/:id', verificarToken, eliminarUsuario);
 
-module.exports = router;
+export default router;

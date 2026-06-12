@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize');
-const { sequelize } = require('../../../core/database/database');
+import { DataTypes  } from 'sequelize';
+import { sequelize  } from '../../../core/database/database';
 
 const Geocerca = sequelize.define('Geocerca', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
@@ -13,4 +13,4 @@ const Geocerca = sequelize.define('Geocerca', {
     timestamps: true
 });
 
-module.exports = Geocerca;
+export default Geocerca;

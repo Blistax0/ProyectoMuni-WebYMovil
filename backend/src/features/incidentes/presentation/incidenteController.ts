@@ -1,4 +1,4 @@
-const Incidente = require('../../../features/incidentes/data/Incidente');
+import Incidente from '../../../features/incidentes/data/Incidente';
 
 // Registramos un nuevo incidente reportado por un patrullero
 const crearIncidente = async (req, res) => {

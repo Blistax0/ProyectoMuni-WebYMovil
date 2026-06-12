@@ -1,4 +1,4 @@
-const Usuario = require('../../../features/usuarios/data/Usuario');
+import Usuario from '../../../features/usuarios/data/Usuario';
 
 // POST: Crear un nuevo usuario
 const crearUsuario = async (req, res) => {

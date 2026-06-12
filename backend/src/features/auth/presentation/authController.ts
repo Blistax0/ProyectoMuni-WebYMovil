@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
-const Usuario = require('../../../features/usuarios/data/Usuario');
-const bcrypt = require('bcrypt');
+import jwt from 'jsonwebtoken';
+import Usuario from '../../../features/usuarios/data/Usuario';
+import bcrypt from 'bcrypt';
 
 const login = async (req, res) => {
     try {

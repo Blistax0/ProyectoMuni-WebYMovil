@@ -1,4 +1,4 @@
-const { body, validationResult } = require('express-validator');
+import { body, validationResult  } from 'express-validator';
 
 const validarCreacionUsuario = [
     body('rut').notEmpty().withMessage('El RUT es obligatorio'),
