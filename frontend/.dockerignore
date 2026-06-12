@@ -1,0 +1,23 @@
+# Dependencias:
+node_modules
+npm-debug.log
+
+# Archivos de entorno y secretos:
+.env
+.env.*
+
+# Carpetas de compilación:
+dist
+build
+out
+
+# Archivos de Git y editores:
+.git
+.gitignore
+.vscode
+.idea
+
+# Archivos de Docker:
+Dockerfile
+docker-compose.yml
+.dockerignore
