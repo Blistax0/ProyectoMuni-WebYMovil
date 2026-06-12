@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { crearIncidente, obtenerIncidentes, actualizarEstadoIncidente, eliminarIncidente } = require('../controllers/incidenteController');
+const { crearIncidente, obtenerIncidentes, actualizarEstadoIncidente, eliminarIncidente } = require('../../../features/incidentes/presentation/incidenteController');
 
 router.post('/', crearIncidente);
 router.get('/', obtenerIncidentes);

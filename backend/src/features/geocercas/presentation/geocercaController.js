@@ -1,4 +1,4 @@
-const Geocerca = require('../models/Geocerca');
+const Geocerca = require('../../../features/geocercas/data/Geocerca');
 
 const crearGeocerca = async (req, res) => {
     try {

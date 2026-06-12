@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config/database');
+const { sequelize } = require('../../../core/database/database');
 
 const PosicionGPS = sequelize.define('PosicionGPS', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },

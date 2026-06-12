@@ -2,12 +2,12 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
-const { sequelize, testConnection } = require('./config/database');
+const { sequelize, testConnection } = require('./core/database/database');
 // MODELOS
-const Usuario = require('./models/Usuario');
-const Geocerca = require('./models/Geocerca');
-const Incidente = require('./models/Incidente');
-const PosicionGPS = require('./models/PosicionGPS');
+const Usuario = require('./features/usuarios/data/Usuario');
+const Geocerca = require('./features/geocercas/data/Geocerca');
+const Incidente = require('./features/incidentes/data/Incidente');
+const PosicionGPS = require('./features/posiciones/data/PosicionGPS');
 
 const app = express();
 app.use(cors());
@@ -33,11 +33,11 @@ sequelize.sync({ alter: true })
     .catch((err) => console.error('Error sincronizando tablas:', err));
 
 // Importar y usar rutas
-const rutasUsuarios = require('./routes/usuariosRoutes');
-const rutasIncidentes = require('./routes/incidentesRoutes');
-const rutasGeocercas = require('./routes/geocercasRoutes'); 
-const rutasPosiciones = require('./routes/posicionesRoutes');
-const rutasAuth = require('./routes/authRoutes');
+const rutasUsuarios = require('./features/usuarios/presentation/usuariosRoutes');
+const rutasIncidentes = require('./features/incidentes/presentation/incidentesRoutes');
+const rutasGeocercas = require('./features/geocercas/presentation/geocercasRoutes'); 
+const rutasPosiciones = require('./features/posiciones/presentation/posicionesRoutes');
+const rutasAuth = require('./features/auth/presentation/authRoutes');
 
 app.use('/api/usuarios', rutasUsuarios);
 app.use('/api/incidentes', rutasIncidentes);

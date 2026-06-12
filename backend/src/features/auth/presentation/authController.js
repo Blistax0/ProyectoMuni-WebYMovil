@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const Usuario = require('../models/Usuario');
+const Usuario = require('../../../features/usuarios/data/Usuario');
 const bcrypt = require('bcrypt');
 
 const login = async (req, res) => {

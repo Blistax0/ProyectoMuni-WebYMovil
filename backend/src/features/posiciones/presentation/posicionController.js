@@ -1,4 +1,4 @@
-const PosicionGPS = require('../models/PosicionGPS');
+const PosicionGPS = require('../../../features/posiciones/data/PosicionGPS');
 
 // POST: Guardar una nueva coordenada enviada por el celular del patrullero
 const guardarPosicion = async (req, res) => {

@@ -6,9 +6,9 @@ const {
     obtenerUsuarioPorId, 
     actualizarUsuario, 
     eliminarUsuario 
-} = require('../controllers/usuarioController');
-const { validarCreacionUsuario } = require('../middlewares/validators/usuarioValidator');
-const { verificarToken } = require('../middlewares/authMiddleware');
+} = require('../../../features/usuarios/presentation/usuarioController');
+const { validarCreacionUsuario } = require('../../../features/usuarios/domain/usuarioValidator');
+const { verificarToken } = require('../../../core/middlewares/authMiddleware');
 
 // Rutas generales (No necesitan ID)
 router.post('/', validarCreacionUsuario, crearUsuario);

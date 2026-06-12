@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config/database');
+const { sequelize } = require('../../../core/database/database');
 
 const Geocerca = sequelize.define('Geocerca', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
