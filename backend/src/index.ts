@@ -1,3 +1,4 @@
+import { Request, Response, NextFunction } from 'express';
 import express from 'express';
 import cors from 'cors';
 require('dotenv').config();
@@ -45,7 +46,7 @@ app.use('/api/geocercas', rutasGeocercas);
 app.use('/api/posiciones', rutasPosiciones);
 app.use('/api/auth', rutasAuth);
 
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
     res.json({ mensaje: '¡El servidor backend del SIGEP está funcionando correctamente!' });
 });
 

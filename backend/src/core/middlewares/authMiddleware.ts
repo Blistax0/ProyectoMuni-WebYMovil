@@ -1,6 +1,7 @@
+import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-const verificarToken = (req, res, next) => {
+const verificarToken = (req: Request, res: Response, next: NextFunction) => {
     // Leer el header Authorization
     const authHeader = req.headers['authorization'];
     
@@ -13,18 +14,17 @@ const verificarToken = (req, res, next) => {
 
     try {
         // Verificar el token con la clave secreta
-        const payload = jwt.verify(token, process.env.JWT_SECRET);
+        const payload = jwt.verify(token, process.env.JWT_SECRET as string);
         
         // Adjuntar los datos del usuario decodificados al objeto req
-        req.usuario = payload;
+        (req as any).usuario = payload;
         
         // Continuar al siguiente middleware o controlador
         next();
-    } catch (error) {
+    } catch (error: any) {
         return res.status(403).json({ mensaje: 'Token inválido o expirado' });
     }
 };
 
-module.exports = {
-    verificarToken
-};
+export { verificarToken
+ };

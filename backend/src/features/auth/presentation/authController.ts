@@ -1,8 +1,9 @@
+import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import Usuario from '../../../features/usuarios/data/Usuario';
 import bcrypt from 'bcrypt';
 
-const login = async (req, res) => {
+const login = async (req: Request, res: Response) => {
     try {
         const { correo, password } = req.body;
 
@@ -34,7 +35,7 @@ const login = async (req, res) => {
             rol: usuario.rol
         };
 
-        const token = jwt.sign(payload, process.env.JWT_SECRET, {
+        const token = jwt.sign(payload, process.env.JWT_SECRET as string, {
             expiresIn: '8h' // El token expira en 8 horas
         });
 
@@ -54,12 +55,11 @@ const login = async (req, res) => {
             }
         });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error en el login:', error);
         res.status(500).json({ mensaje: 'Hubo un problema en el servidor al intentar iniciar sesión. Por favor intenta de nuevo.', error: error.message });
     }
 };
 
-module.exports = {
-    login
-};
+export { login
+ };

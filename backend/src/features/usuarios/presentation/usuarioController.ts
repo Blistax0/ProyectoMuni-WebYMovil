@@ -1,7 +1,8 @@
+import { Request, Response, NextFunction } from 'express';
 import Usuario from '../../../features/usuarios/data/Usuario';
 
 // POST: Crear un nuevo usuario
-const crearUsuario = async (req, res) => {
+const crearUsuario = async (req: Request, res: Response) => {
     try {
         const nuevoUsuario = await Usuario.create(req.body);
         
@@ -10,31 +11,30 @@ const crearUsuario = async (req, res) => {
         delete usuarioSinPassword.password_hash;
 
         res.status(201).json({ mensaje: 'Usuario registrado exitosamente', data: usuarioSinPassword });
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error al crear usuario:', error);
         res.status(400).json({ mensaje: 'No pudimos registrar al usuario. Verifica los datos enviados.' });
     }
 };
 
 // GET: Obtener todos los usuarios activos
-const obtenerUsuarios = async (req, res) => {
+const obtenerUsuarios = async (req: Request, res: Response) => {
     try {
-        // Solo traemos a los que tienen estado: true
         const usuarios = await Usuario.findAll({ 
             where: { estado: true },
             attributes: { exclude: ['password_hash'] } 
         });
         res.status(200).json(usuarios);
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error al listar usuarios:', error);
         res.status(500).json({ mensaje: 'Hubo un problema en el servidor al intentar obtener los usuarios' });
     }
 };
 
 // GET: Obtener un solo usuario por su ID
-const obtenerUsuarioPorId = async (req, res) => {
+const obtenerUsuarioPorId = async (req: Request, res: Response) => {
     try {
-        const usuario = await Usuario.findByPk(req.params.id, {
+        const usuario = await Usuario.findByPk(req.params.id as string, {
             attributes: { exclude: ['password_hash'] }
         });
         
@@ -42,16 +42,16 @@ const obtenerUsuarioPorId = async (req, res) => {
             return res.status(404).json({ mensaje: 'Usuario no encontrado' });
         }
         res.status(200).json(usuario);
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error al buscar usuario por ID:', error);
         res.status(500).json({ mensaje: 'Hubo un problema en el servidor al buscar el usuario' });
     }
 };
 
 // PUT: Actualizar datos de un usuario
-const actualizarUsuario = async (req, res) => {
+const actualizarUsuario = async (req: Request, res: Response) => {
     try {
-        const usuario = await Usuario.findByPk(req.params.id);
+        const usuario = await Usuario.findByPk(req.params.id as string);
         if (!usuario) {
             return res.status(404).json({ mensaje: 'No se encontró el usuario que intentas actualizar' });
         }
@@ -70,31 +70,31 @@ const actualizarUsuario = async (req, res) => {
         delete usuarioActualizado.password_hash;
 
         res.status(200).json({ mensaje: 'Datos del usuario actualizados correctamente', data: usuarioActualizado });
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error al actualizar usuario:', error);
         res.status(400).json({ mensaje: 'No pudimos actualizar la información. Revisa los datos enviados.' });
     }
 };
 
 // DELETE: Eliminar un usuario
-const eliminarUsuario = async (req, res) => {
+const eliminarUsuario = async (req: Request, res: Response) => {
     try {
-        const usuario = await Usuario.findByPk(req.params.id);
+        const usuario = await Usuario.findByPk(req.params.id as string);
         if (!usuario) {
             return res.status(404).json({ mensaje: 'Usuario no encontrado' });
         }
         // En lugar de borrarlo de la base de datos, lo desactivamos
-        usuario.estado = false;
+        (usuario as any).estado = false;
         await usuario.save();
         
         res.status(200).json({ mensaje: 'Usuario dado de baja exitosamente' });
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error al eliminar usuario:', error);
         res.status(500).json({ mensaje: 'Hubo un error en el servidor al intentar dar de baja al usuario' });
     }
 };
 
-module.exports = { 
+export { 
     crearUsuario, 
     obtenerUsuarios, 
     obtenerUsuarioPorId, 

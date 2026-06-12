@@ -1,23 +1,24 @@
+import { Request, Response, NextFunction } from 'express';
 import PosicionGPS from '../../../features/posiciones/data/PosicionGPS';
 
 // POST: Guardar una nueva coordenada enviada por el celular del patrullero
-const guardarPosicion = async (req, res) => {
+const guardarPosicion = async (req: Request, res: Response) => {
     try {
         const nuevaPosicion = await PosicionGPS.create(req.body);
         res.status(201).json({ mensaje: 'Coordenada GPS guardada', data: nuevaPosicion });
-    } catch (error) {
+    } catch (error: any) {
         res.status(400).json({ mensaje: 'Error al guardar posición', error: error.message });
     }
 };
 
 // GET: Obtener el historial completo para dibujarlo en el mapa
-const obtenerHistorial = async (req, res) => {
+const obtenerHistorial = async (req: Request, res: Response) => {
     try {
         const historial = await PosicionGPS.findAll();
         res.status(200).json(historial);
-    } catch (error) {
+    } catch (error: any) {
         res.status(500).json({ mensaje: 'Error interno', error: error.message });
     }
 };
 
-module.exports = { guardarPosicion, obtenerHistorial };
+export { guardarPosicion, obtenerHistorial  };

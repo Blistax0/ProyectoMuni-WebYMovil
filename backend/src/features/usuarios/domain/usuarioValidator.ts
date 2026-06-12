@@ -1,3 +1,4 @@
+import { Request, Response, NextFunction } from 'express';
 import { body, validationResult  } from 'express-validator';
 
 const validarCreacionUsuario = [
@@ -8,7 +9,7 @@ const validarCreacionUsuario = [
     body('rol').optional().isIn(['ADMIN', 'PATRULLERO']).withMessage('Rol inválido'),
     
     // Middleware que captura los errores
-    (req, res, next) => {
+    (req: Request, res: Response, next: NextFunction) => {
         const errores = validationResult(req);
         if (!errores.isEmpty()) {
             return res.status(400).json({ 
@@ -20,6 +21,5 @@ const validarCreacionUsuario = [
     }
 ];
 
-module.exports = {
-    validarCreacionUsuario
-};
+export { validarCreacionUsuario
+ };
