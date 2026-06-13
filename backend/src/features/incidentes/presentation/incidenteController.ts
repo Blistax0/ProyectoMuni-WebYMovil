@@ -5,12 +5,34 @@ import { crearIncidenteUseCase } from '../domain/useCases/crearIncidenteUseCase'
 import { obtenerIncidentesUseCase } from '../domain/useCases/obtenerIncidentesUseCase';
 import { actualizarEstadoIncidenteUseCase } from '../domain/useCases/actualizarEstadoIncidenteUseCase';
 import { eliminarIncidenteUseCase } from '../domain/useCases/eliminarIncidenteUseCase';
+import { uploadService } from '../../../core/services/uploadService'; // Servicio (Nube)
 
 export const crearIncidente = async (req: Request, res: Response) => {
     try {
-        const result = await crearIncidenteUseCase(sequelizeIncidentesRepository, req.body);
+        const datosIncidente = req.body;
+
+        // EF 5: Si el frontend envía una foto (por ejemplo, en formato base64 en el campo 'foto')
+        if (datosIncidente.foto) {
+            // Subimos la foto a la nube de Cloudinary
+            const urlNube = await uploadService.subirImagen(datosIncidente.foto);
+            
+            // Asignamos la URL devuelta al campo que MySQL entiende
+            datosIncidente.evidencia_url = urlNube;
+            
+            // Eliminamos el campo 'foto' pesado para no enviarlo a la BD
+            delete datosIncidente.foto;
+        }
+
+        // Continuamos con el flujo normal de la Arquitectura Limpia
+        const result = await crearIncidenteUseCase(sequelizeIncidentesRepository, datosIncidente);
         res.status(201).json({ mensaje: 'El incidente fue reportado con éxito', data: result });
-    } catch (error: any) { res.status(400).json({ mensaje: 'No pudimos registrar el incidente. Revisa los datos enviados.' }); }
+        
+    } catch (error: any) { 
+        res.status(400).json({ 
+            mensaje: 'No pudimos registrar el incidente.', 
+            error: error.message 
+        }); 
+    }
 };
 
 export const obtenerIncidentes = async (req: Request, res: Response) => {

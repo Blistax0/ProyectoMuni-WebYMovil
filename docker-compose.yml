@@ -12,7 +12,7 @@ services:
     ports:
       - "3306:3306" # Expone el puerto para que puedas verlo desde DBeaver/Workbench
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-psigep123"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -35,6 +35,9 @@ services:
       - DB_PASSWORD=sigep123
       - DB_NAME=sigep_db
       - PORT=3000
+      - CLOUDINARY_CLOUD_NAME=dgbe3ukar
+      - CLOUDINARY_API_KEY=766596764588812
+      - CLOUDINARY_API_SECRET=rWmZnkTS6er3FEjhGlszMPXjBFE
 
   # Frontend 
   web-frontend:
