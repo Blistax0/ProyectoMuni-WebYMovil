@@ -12,7 +12,11 @@ const Incidente = sequelize.define('Incidente', {
     estado_resolucion: { type: DataTypes.ENUM('PENDIENTE', 'EN_PROCESO', 'RESUELTO'), defaultValue: 'PENDIENTE' }
 }, {
     tableName: 'incidentes',
-    timestamps: true 
+    timestamps: true,
+    indexes: [
+        { fields: ['estado_resolucion'] }, // Optimiza cuando filtren por "PENDIENTES"
+        { fields: ['createdAt'] } // Optimiza el ordenamiento por fecha
+    ]
 });
 
 export default Incidente;

@@ -15,9 +15,26 @@ export const crearIncidente = async (req: Request, res: Response) => {
 
 export const obtenerIncidentes = async (req: Request, res: Response) => {
     try {
-        const result = await obtenerIncidentesUseCase(sequelizeIncidentesRepository);
-        res.status(200).json(result);
-    } catch (error: any) { res.status(500).json({ mensaje: 'Hubo un problema interno al intentar cargar los incidentes' }); }
+        // Capturamos los parámetros de la URL (Por defecto: pág 1, límite 10)
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 10;
+        const offset = (page - 1) * limit;
+
+        const { count, rows } = await obtenerIncidentesUseCase(sequelizeIncidentesRepository, limit, offset);
+
+        res.status(200).json({
+            mensaje: 'Incidentes cargados exitosamente',
+            paginacion: {
+                total_registros: count,
+                total_paginas: Math.ceil(count / limit),
+                pagina_actual: page,
+                registros_por_pagina: limit
+            },
+            data: rows
+        });
+    } catch (error: any) { 
+        res.status(500).json({ mensaje: 'Hubo un problema interno al intentar cargar los incidentes' }); 
+    }
 };
 
 export const actualizarEstadoIncidente = async (req: Request, res: Response) => {
