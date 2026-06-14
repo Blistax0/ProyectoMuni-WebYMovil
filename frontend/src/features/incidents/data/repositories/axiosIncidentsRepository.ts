@@ -22,24 +22,26 @@ export class AxiosIncidentsRepository implements IncidentsRepository {
   
   // 1. Petición al Backend para obtener todos los incidentes
   async getIncidents(token: string): Promise<Incident[]> {
-    const response = await axios.get<Incident[]>(API_URL, {
+    const response = await axios.get<{ data: Incident[] }>(API_URL, {
       headers: { 
         Authorization: `Bearer ${token}` 
       }
     });
-    return response.data;
+    // El backend devuelve { mensaje, paginacion, data }
+    return response.data.data;
   }
 
   // 2. Petición al Backend para actualizar el estado (Pendiente, En Proceso, Resuelto)
   async updateIncidentStatus(id: number, status: string, token: string): Promise<Incident> {
-    const response = await axios.put<Incident>(`${API_URL}/${id}/estado`, 
-      { estado: status },
+    const response = await axios.put<{ data: Incident }>(`${API_URL}/${id}`, 
+      { estado_resolucion: status },
       { 
         headers: { 
           Authorization: `Bearer ${token}` 
         } 
       }
     );
-    return response.data;
+    // El backend devuelve { mensaje, data }
+    return response.data.data;
   }
 }

@@ -33,7 +33,7 @@ const IncidentManagementPage: React.FC = () => {
   const repository = new AxiosIncidentsRepository();
   const incidentsUseCase = new IncidentsUseCase(repository);
 
-  const token = localStorage.getItem('admin_token') || '';
+  const token = localStorage.getItem('sigep_token') || '';
 
   const loadIncidents = async () => {
     try {
@@ -94,7 +94,8 @@ const IncidentManagementPage: React.FC = () => {
       </IonHeader>
 
       <IonContent className="ion-padding">
-        <div className="incident-header-section">
+        <div className="incident-dashboard-container">
+          <div className="incident-header-section">
           <h2>Gestión de Incidentes</h2>
           <p>Central de Reportes SIGEP - Vista operativa en tiempo real.</p>
         </div>
@@ -130,7 +131,7 @@ const IncidentManagementPage: React.FC = () => {
               </div>
             ) : (
               incidents.map((inc) => (
-                <div key={inc.id} className= "sigep-card">
+                <div key={inc.id} className="incident-card">
                   <div className="incident-top">
                     <span className="incident-id">#{inc.id}</span>
                     <span className={`badge-gravedad ${inc.nivel_gravedad.toLowerCase()}`}>
@@ -174,6 +175,7 @@ const IncidentManagementPage: React.FC = () => {
           position="bottom"
           color="primary"
         />
+        </div>
       </IonContent>
     </IonPage>
   );
