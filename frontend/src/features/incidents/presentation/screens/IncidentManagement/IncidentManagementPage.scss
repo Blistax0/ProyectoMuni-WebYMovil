@@ -1,21 +1,269 @@
-.incident-management-page {
+/* ==========================================================
+   SIGEP - GESTIÓN DE INCIDENTES
+   ========================================================== */
+
+ion-content {
+  --background: #f7f9fb;
+}
+
+.incident-header-section {
+  margin-bottom: 24px;
+
+  h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #000;
+    margin: 0;
+  }
+
+  p {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: #666;
+    margin-top: 6px;
+  }
+}
+
+/* ==========================================================
+   TARJETAS DE RESUMEN
+   ========================================================== */
+
+.incident-stats {
   display: flex;
-  width: 100vw;
-  height: 100vh;
-  background-color: #eee;
+  gap: 20px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
 
-  .incident-content {
-    flex: 1;
+.stat-card {
+  min-width: 180px;
+
+  background: rgba(255,255,255,.85);
+  backdrop-filter: blur(15px);
+
+  border-radius: 20px;
+
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+
+  transition: all .2s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+  }
+
+  .stat-number {
+    font-family: 'Inter', sans-serif;
+    font-size: 34px;
+    font-weight: 700;
+    color: #448cc7;
+  }
+
+  .stat-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #666;
+    margin-top: 4px;
+  }
+
+  &.pending .stat-number {
+    color: #e98800;
+  }
+
+  &.progress .stat-number {
+    color: #448cc7;
+  }
+
+  &.resolved .stat-number {
+    color: #16b800;
+  }
+}
+
+/* ==========================================================
+   TABLA PRINCIPAL
+   ========================================================== */
+
+.incident-dashboard-container {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+// Grid de tarjetas tipo "Centro de Monitoreo"
+.incident-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 20px;
+}
+
+// Diseño de la tarjeta de incidente
+.incident-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(68, 140, 199, 0.12);
+  }
+
+  .incident-top {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
 
-    .placeholder-text {
-      font-family: 'Inter', sans-serif;
-      font-weight: 700;
-      font-size: 16px;
-      color: #000;
-      letter-spacing: 0.05em;
+    .incident-id {
+      font-weight: 800;
+      color: #448cc7;
+      font-size: 13px;
     }
   }
+
+  .incident-main {
+    .incident-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #000;
+      margin: 0;
+    }
+    .incident-description {
+      font-size: 14px;
+      color: #666;
+      margin-top: 8px;
+    }
+  }
+
+  .incident-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+  }
+}
+
+/* ==========================================================
+   SELECTOR DE ESTADO
+   ========================================================== */
+
+.status-selector {
+
+  --background: white;
+
+  border-radius: 12px;
+
+  border: 1px solid rgba(0,0,0,.08);
+
+  min-height: 42px;
+
+  font-family: 'Inter', sans-serif;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  transition: .2s ease;
+
+  &:focus-within {
+    border-color: #448cc7;
+    box-shadow:
+      0 0 0 3px rgba(68,140,199,.15);
+  }
+}
+
+/* ==========================================================
+   BADGES
+   ========================================================== */
+
+.badge-gravedad {
+
+  display: inline-flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  min-width: 80px;
+
+  padding: 8px 14px;
+
+  border-radius: 20px;
+
+  font-family: 'Inter', sans-serif;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+.badge-gravedad.baja {
+  background: rgba(22,216,0,.12);
+  color: #16b800;
+}
+
+.badge-gravedad.media {
+  background: rgba(233,136,0,.15);
+  color: #e98800;
+}
+
+.badge-gravedad.alta {
+  background: rgba(235,87,87,.15);
+  color: #eb5757;
+}
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 900px) {
+
+  .incident-stats {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.stat-card {
+  flex: 1;
+
+  background: rgba(255,255,255,0.8);
+
+  backdrop-filter: blur(10px);
+
+  border-radius: 18px;
+
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+
+  box-shadow:
+    0 4px 20px rgba(0,0,0,0.08);
+
+  .stat-number {
+    font-size: 32px;
+    font-weight: 700;
+    color: #448cc7;
+  }
+
+  .stat-label {
+    font-size: 14px;
+    color: #666;
+  }
+}
+
 }

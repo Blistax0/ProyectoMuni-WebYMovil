@@ -1,0 +1,39 @@
+/* --- Librería de Componentes SIGEP --- */
+
+// Estilo base para tarjetas
+.sigep-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  margin-bottom: 16px;
+}
+
+// Badges de gravedad
+.sigep-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  &.alta { background: #ff4d4f; color: white; }
+  &.media { background: #faad14; color: white; }
+  &.baja { background: #52c41a; color: white; }
+}
+
+// Botones institucionales
+.sigep-button {
+  --background: #448cc7;
+  --color: white;
+  --border-radius: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+// Grid de tarjetas
+.sigep-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
