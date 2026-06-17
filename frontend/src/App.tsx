@@ -21,22 +21,10 @@ import { AuthProvider } from './features/auth/domain/AuthContext';
 import ProtectedRoute from './core/router/guards/ProtectedRoute';
 import PublicRoute from './core/router/guards/PublicRoute';
 
-<<<<<<< HEAD
-/* Páginas Públicas (PC) */
-import Login from './features/auth/presentation/screens/Login/Login';
-import Register from './features/auth/presentation/screens/Register/Register';
-import ResetPassword from './features/auth/presentation/screens/ResetPassword/ResetPassword';
-
 /* Páginas Públicas (Móvil) */
-import LoginMovil from './features/auth/presentation/screens/Mobile/LoginMovil';
-import RegistroMovil from './features/auth/presentation/screens/Mobile/RegistroMovil';
+const LoginMovil = lazy(() => import('./features/auth/presentation/screens/Mobile/LoginMovil'));
+const RegistroMovil = lazy(() => import('./features/auth/presentation/screens/Mobile/RegistroMovil'));
 
-/* Páginas Protegidas (PC) */
-import Dashboard from './features/dashboard/presentation/screens/Dashboard/Dashboard';
-import GeoFencingPage from './features/geofencing/presentation/screens/GeoFencing/GeoFencingPage';
-import RouteHistoryPage from './features/tracking/presentation/screens/RouteHistory/RouteHistoryPage';
-import IncidentManagementPage from './features/incidents/presentation/screens/IncidentManagement/IncidentManagementPage';
-=======
 /* Páginas con Lazy Loading */
 const Login = lazy(() => import('./features/auth/presentation/screens/Login/Login'));
 const Register = lazy(() => import('./features/auth/presentation/screens/Register/Register'));
@@ -45,7 +33,6 @@ const Dashboard = lazy(() => import('./features/dashboard/presentation/screens/D
 const GeoFencingPage = lazy(() => import('./features/geofencing/presentation/screens/GeoFencing/GeoFencingPage'));
 const RouteHistoryPage = lazy(() => import('./features/tracking/presentation/screens/RouteHistory/RouteHistoryPage'));
 const IncidentManagementPage = lazy(() => import('./features/incidents/presentation/screens/IncidentManagement/IncidentManagementPage'));
->>>>>>> 73b4edbbcbf964270cad07a5c636a932582d618d
 
 /* Pantalla Táctica (Móvil) */
 import Monitor from './features/auth/presentation/screens/Monitor/Monitor';
@@ -60,17 +47,10 @@ const App: React.FC = () => (
         <Suspense fallback={<IonLoading isOpen={true} message="Cargando SIGEP..." />}>
           <IonRouterOutlet>
 
-<<<<<<< HEAD
-          {/* Rutas Públicas de PC */}
-          <Route exact path="/login">
-            <PublicRoute><Login /></PublicRoute>
-          </Route>
-=======
             {/* Rutas Públicas */}
             <Route exact path="/login">
               <PublicRoute><Login /></PublicRoute>
             </Route>
->>>>>>> 73b4edbbcbf964270cad07a5c636a932582d618d
 
             <Route exact path="/register">
               <PublicRoute><Register /></PublicRoute>
@@ -80,36 +60,22 @@ const App: React.FC = () => (
               <PublicRoute><ResetPassword /></PublicRoute>
             </Route>
 
-<<<<<<< HEAD
-          {/* Rutas Públicas de Celular */}
-          <Route exact path="/app/login">
-            <PublicRoute><LoginMovil /></PublicRoute>
-          </Route>
+            {/* Rutas Públicas de Celular */}
+            <Route exact path="/app/login">
+              <PublicRoute><LoginMovil /></PublicRoute>
+            </Route>
 
-          <Route exact path="/app/register">
-            <PublicRoute><RegistroMovil /></PublicRoute>
-          </Route>
+            <Route exact path="/app/register">
+              <PublicRoute><RegistroMovil /></PublicRoute>
+            </Route>
 
-          {/* Rutas Protegidas */}
-          <Route exact path="/monitor">
-            <ProtectedRoute allowedRoles={['ADMIN', 'PATRULLERO']}>
-              <Monitor />
-            </ProtectedRoute>
-          </Route>
-
-          <Route exact path="/dashboard">
-            <ProtectedRoute allowedRoles={['ADMIN', 'PATRULLERO']}>
-              <Dashboard />
-            </ProtectedRoute>
-          </Route>
-
-          <Route exact path="/geofencing">
-            <ProtectedRoute allowedRoles={['ADMIN', 'PATRULLERO']}>
-              <GeoFencingPage />
-            </ProtectedRoute>
-          </Route>
-=======
             {/* Rutas Protegidas */}
+            <Route exact path="/monitor">
+              <ProtectedRoute allowedRoles={['ADMIN', 'PATRULLERO']}>
+                <Monitor />
+              </ProtectedRoute>
+            </Route>
+
             <Route exact path="/dashboard">
               <ProtectedRoute allowedRoles={['ADMIN', 'PATRULLERO']}>
                 <Dashboard />
@@ -121,7 +87,6 @@ const App: React.FC = () => (
                 <GeoFencingPage />
               </ProtectedRoute>
             </Route>
->>>>>>> 73b4edbbcbf964270cad07a5c636a932582d618d
 
             <Route exact path="/history">
               <ProtectedRoute allowedRoles={['ADMIN', 'PATRULLERO']}>
