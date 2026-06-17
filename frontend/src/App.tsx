@@ -27,16 +27,23 @@ import { AuthProvider } from './features/auth/domain/AuthContext';
 import ProtectedRoute from './core/router/guards/ProtectedRoute';
 import PublicRoute from './core/router/guards/PublicRoute';
 
-/* Páginas Públicas */
+/* Páginas Públicas (PC) */
 import Login from './features/auth/presentation/screens/Login/Login';
 import Register from './features/auth/presentation/screens/Register/Register';
 import ResetPassword from './features/auth/presentation/screens/ResetPassword/ResetPassword';
 
-/* Páginas Protegidas */
+/* Páginas Públicas (Móvil) */
+import LoginMovil from './features/auth/presentation/screens/Mobile/LoginMovil';
+import RegistroMovil from './features/auth/presentation/screens/Mobile/RegistroMovil';
+
+/* Páginas Protegidas (PC) */
 import Dashboard from './features/dashboard/presentation/screens/Dashboard/Dashboard';
 import GeoFencingPage from './features/geofencing/presentation/screens/GeoFencing/GeoFencingPage';
 import RouteHistoryPage from './features/tracking/presentation/screens/RouteHistory/RouteHistoryPage';
 import IncidentManagementPage from './features/incidents/presentation/screens/IncidentManagement/IncidentManagementPage';
+
+/* Pantalla Táctica (Móvil) */
+import Monitor from './features/auth/presentation/screens/Monitor/Monitor';
 
 setupIonicReact();
 
@@ -46,7 +53,7 @@ const App: React.FC = () => (
       <IonReactRouter>
         <IonRouterOutlet>
 
-          {/* Rutas Públicas */}
+          {/* Rutas Públicas de PC */}
           <Route exact path="/login">
             <PublicRoute><Login /></PublicRoute>
           </Route>
@@ -59,15 +66,30 @@ const App: React.FC = () => (
             <PublicRoute><ResetPassword /></PublicRoute>
           </Route>
 
+          {/* Rutas Públicas de Celular */}
+          <Route exact path="/app/login">
+            <PublicRoute><LoginMovil /></PublicRoute>
+          </Route>
+
+          <Route exact path="/app/register">
+            <PublicRoute><RegistroMovil /></PublicRoute>
+          </Route>
+
           {/* Rutas Protegidas */}
+          <Route exact path="/monitor">
+            <ProtectedRoute allowedRoles={['ADMIN', 'PATRULLERO']}>
+              <Monitor />
+            </ProtectedRoute>
+          </Route>
+
           <Route exact path="/dashboard">
-            <ProtectedRoute allowedRoles={['ADMIN', 'PATRULLERO']}> {/* De momento lo deje para que puedan verlo ambos por temas de pruebas y saber que funciona bien */}
+            <ProtectedRoute allowedRoles={['ADMIN', 'PATRULLERO']}>
               <Dashboard />
             </ProtectedRoute>
           </Route>
 
           <Route exact path="/geofencing">
-            <ProtectedRoute allowedRoles={['ADMIN', 'PATRULLERO']}> {/* Lo mismo :p, si no lo dejamos solo para admin */}
+            <ProtectedRoute allowedRoles={['ADMIN', 'PATRULLERO']}>
               <GeoFencingPage />
             </ProtectedRoute>
           </Route>

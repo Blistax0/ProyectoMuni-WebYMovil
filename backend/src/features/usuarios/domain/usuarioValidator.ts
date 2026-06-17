@@ -6,7 +6,7 @@ const validarCreacionUsuario = [
     body('nombre_completo').notEmpty().withMessage('El nombre completo es obligatorio'),
     body('correo').isEmail().withMessage('Debe ser un correo válido'),
     body('password_hash').isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres'),
-    body('rol').optional().isIn(['ADMIN', 'PATRULLERO']).withMessage('Rol inválido'),
+    //body('rol').optional().isIn(['ADMIN', 'PATRULLERO']).withMessage('Rol inválido'),
     
     // Middleware que captura los errores
     (req: Request, res: Response, next: NextFunction) => {
