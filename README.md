@@ -198,18 +198,79 @@ La decisión de utilizar un componente de mapa de fondo persistente y un menú l
 
 ### Metodología de Trabajo
 
-Para asegurar la entrega y calidad del software, se utilizan las siguientes herramientas de gestión:
+Para asegurar la entrega, calidad del software y el trabajo colaborativo del equipo, se utilizaron las siguientes herramientas de gestión de GitHub:
 
-- **Gestión de Requerimientos:** Uso activo de **GitHub Issues** para la trazabilidad de cada funcionalidad.
-- **Control de Tareas:** Seguimiento de avances mediante tablero **GitHub Projects** bajo metodología **Kanban**.
+*   **Gestión de Requerimientos y Tareas:** Uso activo de **GitHub Issues** para la asignación y trazabilidad de cada funcionalidad, gestionados a través de un tablero **GitHub Projects** bajo metodología **Kanban** (To Do, In Progress, Done).
+*   **Colaboración:** Uso de **GitHub Discussions** para la toma de decisiones arquitectónicas y ramas (*branches*) separadas para el desarrollo de nuevas *features* antes de integrarlas a la rama principal.
 
-### Arquitectura de Software y Estructura del Proyecto
+### Arquitectura del Software (Clean Architecture)
 
-El sistema está desarrollado con el stack **Ionic + React**, manteniendo una arquitectura modular basada en componentes para asegurar escalabilidad, separando claramente las vistas, la lógica de estado y los elementos reutilizables:
+Se ha refactorizado el proyecto completo para cumplir con los estándares de **Clean Architecture**, aislando la lógica de negocio de las herramientas tecnológicas. Por ejemplo, el uso del ORM Sequelize en la Capa de Datos del backend no solo abstrae las consultas a MySQL, sino que automáticamente parametriza las entradas, brindando protección nativa contra inyecciones SQL.
 
-### TENEMOS QUE ACTUALIZAR ESTA FOTO (o no, no se si sea necesario ahora)
+Tanto el Frontend como el Backend están divididos por **Features** (Dominios de negocio como Auth, Usuarios, Incidentes), y cada Feature contiene la siguiente estructura interna de 3 capas:
 
-<img width="871" height="686" alt="image" src="https://github.com/user-attachments/assets/2db0a3b6-ee7e-4e4b-a1e2-067ecc19a854" />
+*   **data/ (Capa de Datos):** Implementaciones técnicas. En el Backend, la conexión real con MySQL vía Sequelize. En el Frontend, la conexión HTTP real vía Axios.
+*   **domain/ (Capa de Dominio):** Núcleo de la lógica. Casos de Uso (reglas del sistema independientes del framework) e Interfaces/Contratos.
+*   **presentation/ (Capa de Presentación):** En el Backend, Controladores y Rutas de Express. En el Frontend, las pantallas de React/Ionic y componentes UI.
+
+#### Estructura de Carpetas del Backend
+
+El backend está desarrollado con Node.js y TypeScript, aplicando **Clean Architecture**. El código fuente (`src/`) se divide en configuraciones principales (`core/`) y módulos de negocio independientes (`features/`).
+
+```text
+backend/
+├── dist/                     # Código TypeScript compilado a JavaScript (Generado automáticamente)
+├── src/                      # Código fuente principal
+│   ├── core/                 # Configuraciones globales y herramientas compartidas
+│   │   ├── database/         # Conexión a MySQL (Sequelize)
+│   │   ├── middlewares/      # Interceptores de Express (ej. Autenticación JWT)
+│   │   └── services/         # Servicios externos compartidos (ej. Cloudinary)
+│   │
+│   ├── features/             # Módulos de la aplicación separados por dominio de negocio
+│   │   ├── auth/             # Autenticación y Login
+│   │   ├── geocercas/        # Gestión de zonas territoriales
+│   │   ├── incidentes/       # Reportes y emergencias
+│   │   ├── posiciones/       # Rastreo GPS
+│   │   └── usuarios/         # Gestión de personal y roles
+│   │
+│   └── index.ts              # Punto de entrada principal del servidor Express
+│
+├── .env                      # Variables de entorno (No subido al repositorio)
+├── Dockerfile                # Instrucciones de contenerización para el despliegue
+├── package.json              # Dependencias del proyecto (Express, Sequelize, Bcrypt, etc.)
+└── tsconfig.json             # Reglas de compilación de TypeScript
+```
+
+#### Estructura de Carpetas del Frontend
+
+```text
+frontend/
+├── android/                  # Proyecto nativo de Android generado por Capacitor
+├── ios/                      # Proyecto nativo de iOS generado por Capacitor
+├── cypress/                  # Configuración para pruebas End-to-End (E2E)
+├── src/                      # Código fuente principal de la aplicación
+│   ├── core/                 # Elementos globales y compartidos en toda la app
+│   │   ├── config/           # Configuraciones globales (ej. instancias de Axios)
+│   │   ├── presentation/     # Componentes UI genéricos (Botones, Modales, Sidebar)
+│   │   ├── router/           # Gestión de rutas y Guards (protección de vistas por login)
+│   │   └── theme/            # Variables CSS globales y diseño base de Ionic
+│   │
+│   ├── features/             # Módulos de la aplicación independientes (Clean Architecture)
+│   │   ├── auth/             # Login, registro y gestión de sesión JWT
+│   │   ├── dashboard/        # Panel central de métricas y estadísticas
+│   │   ├── geofencing/       # Herramientas de dibujo y control de geocercas en el mapa
+│   │   ├── incidents/        # Formularios de reportes, multimedia y alertas
+│   │   └── tracking/         # Rastreo GPS en tiempo real de los patrulleros
+│   │
+│   ├── App.tsx               # Componente raíz y enrutador principal
+│   └── main.tsx              # Punto de montaje de React en el DOM
+│
+├── capacitor.config.ts       # Configuración del puente nativo móvil (Cámara, GPS)
+├── Dockerfile                # Instrucciones de contenerización web
+├── ionic.config.json         # Configuración del CLI de Ionic
+├── package.json              # Dependencias (React, Ionic, Capacitor, Axios)
+└── vite.config.ts            # Configuración del empaquetador y servidor de desarrollo
+```
 
 ---
 
