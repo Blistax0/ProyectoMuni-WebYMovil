@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { 
   IonPage, 
   IonContent, 
-  useIonRouter
+  useIonRouter,
+  IonToast
 } from '@ionic/react';
 import API from '../../../../../core/config/axios';
 
@@ -11,9 +12,19 @@ const LoginMovil: React.FC = () => {
   const [contrasena, setContrasena] = useState<string>('');
   const router = useIonRouter();
 
+  const [showToast, setShowToast] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string>('');
+  const [toastColor, setToastColor] = useState<'success' | 'danger'>('danger');
+
+  const showNotification = (msg: string, color: 'success' | 'danger' = 'danger') => {
+    setToastMessage(msg);
+    setToastColor(color);
+    setShowToast(true);
+  };
+
   const handleLogin = async () => {
     if (!correo || !contrasena) {
-      alert('Por favor, complete todos los campos del formulario.');
+      showNotification('Por favor, complete todos los campos del formulario.');
       return;
     }
 
@@ -33,9 +44,9 @@ const LoginMovil: React.FC = () => {
     } catch (error: any) {
       console.error('Error de autenticación:', error);
       if (error.response && error.response.data && error.response.data.mensaje) {
-        alert(error.response.data.mensaje);
+        showNotification(error.response.data.mensaje);
       } else {
-        alert('Error de conexion con el servidor principal. Verifique el estado del backend.');
+        showNotification('Error de conexion con el servidor principal. Verifique el estado del backend.');
       }
     }
   };
@@ -114,6 +125,14 @@ const LoginMovil: React.FC = () => {
           </p>
 
         </div>
+        <IonToast
+          isOpen={showToast}
+          onDidDismiss={() => setShowToast(false)}
+          message={toastMessage}
+          duration={3000}
+          color={toastColor}
+          position="bottom"
+        />
       </IonContent>
     </IonPage>
   );

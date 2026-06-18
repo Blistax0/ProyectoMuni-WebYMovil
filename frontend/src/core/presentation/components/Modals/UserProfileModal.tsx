@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { IonIcon } from '@ionic/react';
 import { closeOutline, person } from 'ionicons/icons';
 import { useAuth } from '../../../../features/auth/domain/AuthContext';
@@ -14,7 +15,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
   
   if (!isOpen) return null;
 
-  return (
+  return createPortal(
     <div className="user-profile-overlay" onClick={onClose}>
       <div className="user-profile-modal" onClick={e => e.stopPropagation()}>
         <button className="close-modal-btn" onClick={onClose}>
@@ -58,7 +59,8 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onClose }) 
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

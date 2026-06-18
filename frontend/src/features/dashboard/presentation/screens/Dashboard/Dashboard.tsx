@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IonContent, IonPage } from '@ionic/react';
+import { IonContent, IonPage, useIonRouter } from '@ionic/react';
 import Sidebar from '../../../../../core/presentation/components/Sidebar/Sidebar';
 import MapMarker from '../../../../../features/tracking/presentation/components/MapMarker/MapMarker';
 import AlertsPanel from '../../../../../core/presentation/components/AlertsPanel/AlertsPanel';
@@ -8,103 +8,101 @@ import MapViewport from '../../../../../features/geofencing/presentation/compone
 import { ModalAlertData } from '../../../../../core/presentation/components/Modals/UnifiedModal';
 import { NotificationData } from '../../../../../core/presentation/components/AlertsPanel/NotificationItem';
 import { PATROL_POSITIONS, PATROL_LIVE_STATUS } from '../../../../../features/tracking/data/patrolPositions';
+import { AxiosIncidentsRepository } from '../../../../../features/incidents/data/repositories/axiosIncidentsRepository';
+import { IncidentsUseCase } from '../../../../../features/incidents/domain/useCases/ejemploIncidentsUseCase';
 import './Dashboard.scss';
 
 const Dashboard: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAlert, setSelectedAlert] = useState<ModalAlertData | null>(null);
+  const router = useIonRouter();
 
-  const notifications: NotificationData[] = [
-    {
-      id: 'p2',
-      title: 'Alerta de Pánico',
-      subtitle: 'Patrulla 2 - Avenida Arturo Phillips',
-      time: '1m',
-      type: 'panic',
-      read: false
-    },
-    {
-      id: 'p1',
-      title: 'Alerta de Pánico',
-      subtitle: 'Patrulla 1 - Calle Las Violetas',
-      time: '2m',
-      type: 'panic',
-      read: false
-    },
-    {
-      id: 'i3',
-      title: 'Incidente Reportado',
-      subtitle: 'Asalto - Marbella',
-      time: '3m',
-      type: 'incident',
-      incidentNumber: 3,
-      read: false
-    },
-    {
-      id: 'g5',
-      title: 'Salida de Geo-cerca',
-      subtitle: 'Patrulla 5 - Límite Calle Uno',
-      time: '7m',
-      type: 'geofence',
-      read: false
-    },
-    {
-      id: 'i2',
-      title: 'Incidente Reportado',
-      subtitle: 'Grupo Sospechoso - Las Violetas',
-      time: '10m',
-      type: 'incident',
-      incidentNumber: 2,
-      read: false
-    },
-    {
-      id: 'i1',
-      title: 'Incidente Reportado',
-      subtitle: 'Consumo de Alcohol - Plaza de las Flores',
-      time: '15m',
-      type: 'incident',
-      incidentNumber: 1,
-      read: false
-    }
-  ];
+  const [notifications, setNotifications] = useState<NotificationData[]>([]);
 
-  // Mapa de patrulla ID → notificación correspondiente
+  React.useEffect(() => {
+    let intervalId: any;
+
+    const fetchIncidents = async () => {
+      try {
+        const token = localStorage.getItem('sigep_token') || '';
+        const repo = new AxiosIncidentsRepository();
+        const useCase = new IncidentsUseCase(repo);
+        const data = await useCase.executeGetIncidents(token);
+        
+        // Mapear los incidentes a NotificationData
+        const mapped: NotificationData[] = data.map(inc => {
+          const isPanic = inc.tipo_incidente?.toLowerCase().includes('panico') || inc.tipo_incidente?.toLowerCase().includes('pánico');
+          return {
+            id: inc.id.toString(),
+            title: isPanic ? 'Alerta de Pánico' : inc.tipo_incidente,
+            subtitle: inc.descripcion || 'Sin descripción',
+            time: new Date(inc.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            type: isPanic ? 'panic' : 'incident',
+            incidentNumber: inc.id,
+            read: false,
+            // Guardamos la info original para el modal
+            rawIncident: inc
+          };
+        });
+
+        // Añadir algunas geocercas falsas para mantener la UI rica (los vehiculos siguen siendo default)
+        mapped.push({
+          id: 'g5', title: 'Salida de Geo-cerca', subtitle: 'Patrulla 5 - Límite Calle Uno',
+          time: '12:00', type: 'geofence', read: false
+        });
+
+        // Ordenamos para que los más recientes (mayor ID o fecha) salgan primero
+        mapped.sort((a, b) => b.id > a.id ? 1 : -1);
+
+        setNotifications(mapped);
+      } catch (error) {
+        console.error("Error cargando notificaciones del dashboard", error);
+      }
+    };
+
+    fetchIncidents();
+    // Refrescar incidentes cada 5 segundos para que los pánicos y nuevos reportes aparezcan en tiempo real
+    intervalId = setInterval(fetchIncidents, 5000);
+
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, []);
+
+  // Mapa de patrulla ID → notificación correspondiente (mantenemos el default para geocerca)
   const patrolNotificationMap: Record<number, string> = {
-    1: 'p1',
-    2: 'p2',
     5: 'g5',
   };
 
-  const handleNotificationClick = (notif: NotificationData) => {
+  const handleNotificationClick = (notif: NotificationData & { rawIncident?: any }) => {
     let modalData: ModalAlertData = {
       type: notif.type,
-      time: `Hace ${notif.time}`,
-      location: notif.subtitle.split(' - ')[1] + ', Santo Domingo, Valparaíso',
-      unit: notif.subtitle.split(' - ')[0],
+      time: notif.time,
+      location: 'Ubicación reportada',
+      unit: 'Unidad Táctica',
       title: '',
       coords: '',
       primaryAction: '',
     };
 
+    if (notif.rawIncident) {
+      modalData.coords = `${notif.rawIncident.latitud}, ${notif.rawIncident.longitud}`;
+    }
+
     if (notif.type === 'panic') {
       modalData = {
         ...modalData,
         title: 'EMERGENCIA: BOTÓN DE PÁNICO ACTIVADO',
-        coords: notif.id === 'p1' ? '-33.645268, -71.630794' : '-33.630712, -71.623918',
-        statusLabel: 'Estado del Vehículo',
-        statusValue: notif.id === 'p1' ? 'En movimiento (20 km/h)' : 'Detenido (0 km/h)',
-        officers: notif.id === 'p1' ? 'Sebastián Soto - Pablo Rojas' : 'Juan Pérez - Diego Soto',
+        statusLabel: 'Estado',
+        statusValue: 'Crítico',
         primaryAction: 'DESPACHAR APOYO INMEDIATO',
       };
     } else if (notif.type === 'incident') {
-      const isGrave = notif.incidentNumber === 3;
-      const isMedia = notif.incidentNumber === 2;
       modalData = {
         ...modalData,
-        title: 'DETALLE DE INCIDENTE REPORTADO',
-        gravity: isGrave ? 'ALTA' : (isMedia ? 'MEDIA' : 'BAJA'),
-        coords: isGrave ? '-33.636308, -71.631518' : (isMedia ? '-33.645471, -71.630812' : '-33.640424, -71.629345'),
-        primaryAction: isGrave ? 'DERIVAR A CARABINEROS' : (isMedia ? 'ENVIAR PATRULLA PREVENTIVA' : 'ENVIAR INSPECTORES MUNICIPALES'),
+        title: `INCIDENTE: ${notif.title.toUpperCase()}`,
+        gravity: notif.rawIncident?.nivel_gravedad || 'MEDIA',
+        primaryAction: 'VER DETALLES',
       };
     } else if (notif.type === 'geofence') {
       modalData = {
@@ -166,6 +164,10 @@ const Dashboard: React.FC = () => {
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             data={selectedAlert}
+            onSecondaryAction={() => {
+              setIsModalOpen(false);
+              router.push('/incidents', 'forward', 'push');
+            }}
           />
         </div>
       </IonContent>

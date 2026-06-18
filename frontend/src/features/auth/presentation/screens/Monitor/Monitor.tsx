@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   IonPage, IonFab, IonFabButton, IonIcon, IonModal, IonButton,
-  IonSegment, IonSegmentButton, IonLabel, IonList, IonItem, IonBadge
+  IonSegment, IonSegmentButton, IonLabel, IonList, IonItem, IonBadge, IonToast
 } from '@ionic/react';
-import { alertCircle, camera, send, close, personCircle, logOut, map, locate, car } from 'ionicons/icons';
+import { alertCircle, camera, send, close, personCircle, logOut, map, locate, car, personOutline } from 'ionicons/icons';
 import { Geolocation } from '@capacitor/geolocation';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import axios from 'axios';
+import { AxiosIncidentsRepository } from '../../../../incidents/data/repositories/axiosIncidentsRepository';
+import { IncidentsUseCase } from '../../../../incidents/domain/useCases/ejemploIncidentsUseCase';
+import { useAuth } from '../../../../auth/domain/AuthContext';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -30,6 +32,7 @@ const RecenterMap: React.FC<{ lat: number; lng: number; zoom: number }> = ({ lat
 };
 
 const Monitor: React.FC = () => {
+  const { user, logout } = useAuth();
   const [latitud, setLatitud] = useState<number>(-33.022); 
   const [longitud, setLongitud] = useState<number>(-71.551);
   const [zoomActual, setZoomActual] = useState<number>(16);
@@ -38,8 +41,17 @@ const Monitor: React.FC = () => {
   const [showProfileModal, setShowProfileModal] = useState<boolean>(false);
   const [vistaGlobal, setVistaGlobal] = useState<boolean>(false);
 
+  const [showToast, setShowToast] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string>('');
+  const [toastColor, setToastColor] = useState<'success' | 'danger'>('success');
+
+  const showNotification = (msg: string, color: 'success' | 'danger' = 'success') => {
+    setToastMessage(msg);
+    setToastColor(color);
+    setShowToast(true);
+  };
+
   const [segmentoPerfil, setSegmentoPerfil] = useState<'datos' | 'patrullas'>('datos');
-  const [usuarioActivo, setUsuarioActivo] = useState<any>({ nombre: 'Cargando...', correo: '', rol: '' });
 
   const [isPressingPanic, setIsPressingPanic] = useState<boolean>(false);
   const panicTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -55,22 +67,6 @@ const Monitor: React.FC = () => {
   ];
 
   useEffect(() => {
-    const userStr = localStorage.getItem('sigep_userdata');
-    if (userStr) {
-      try {
-        const userData = JSON.parse(userStr);
-        setUsuarioActivo({ 
-          nombre: userData.nombre || localStorage.getItem('sigep_username') || 'Patrullero', 
-          correo: userData.correo || '', 
-          rol: localStorage.getItem('sigep_role') || 'Patrullero' 
-        });
-      } catch (e) {
-        console.error('Error al procesar informacion de usuario local');
-      }
-    } else {
-      setUsuarioActivo({ nombre: 'Patrullero Demo', correo: 'patrulla@santodomingo.cl', rol: 'Patrullero' });
-    }
-
     const obtenerUbicacionReal = async () => {
       try {
         const permisos = await Geolocation.requestPermissions();
@@ -116,27 +112,46 @@ const Monitor: React.FC = () => {
 
   const dispararBotonDePanico = async () => {
     try {
-      await axios.post('http://localhost:3000/api/incidentes', {
-        tipo: 'Alerta de Panico', gravedad: 'Alta', descripcion: 'Boton de panico activado por el patrullero', foto: null, lat: latitud, lng: longitud, fecha_reporte: new Date().toISOString()
-      });
-      alert('Alerta de Panico enviada a la central con exito. Mantenga la calma, apoyo en camino.');
+      const token = localStorage.getItem('sigep_token') || '';
+      const repo = new AxiosIncidentsRepository();
+      const useCase = new IncidentsUseCase(repo);
+      
+      await useCase.executeCreateIncident({
+        tipo_incidente: 'Alerta de Panico',
+        nivel_gravedad: 'ALTA',
+        descripcion: 'Boton de panico activado por el patrullero',
+        latitud: latitud,
+        longitud: longitud,
+      }, token);
+      
+      showNotification('Alerta de Panico enviada a la central con exito. Mantenga la calma, apoyo en camino.', 'success');
     } catch (error) {
       console.error('Error enviando panico:', error);
-      alert('Error de conexion con la central al enviar alerta. Verifique su conexion.');
+      showNotification('Error de conexion con la central al enviar alerta. Verifique su conexion.', 'danger');
     }
   };
 
   const enviarReporteAlBackend = async () => {
     try {
-      await axios.post('http://localhost:3000/api/incidentes', {
-        tipo: tipoIncidente, gravedad: gravedad, descripcion: descripcion, foto: fotoBase64, lat: latitud, lng: longitud, fecha_reporte: new Date().toISOString()
-      });
-      alert('Reporte de incidente subido al sistema correctamente.');
+      const token = localStorage.getItem('sigep_token') || '';
+      const repo = new AxiosIncidentsRepository();
+      const useCase = new IncidentsUseCase(repo);
+
+      await useCase.executeCreateIncident({
+        tipo_incidente: tipoIncidente,
+        nivel_gravedad: gravedad.toUpperCase() as 'BAJA' | 'MEDIA' | 'ALTA',
+        descripcion: descripcion,
+        latitud: latitud,
+        longitud: longitud,
+        evidencia_url: fotoBase64 || undefined
+      }, token);
+      
+      showNotification('Reporte de incidente subido al sistema correctamente.', 'success');
       setShowModal(false);
       setTipoIncidente(''); setGravedad(''); setDescripcion(''); setFotoBase64(null);
     } catch (error) {
       console.error('Error al enviar incidente:', error);
-      alert('Hubo un error al guardar el reporte.');
+      showNotification('Hubo un error al guardar el reporte.', 'danger');
     }
   };
 
@@ -150,12 +165,7 @@ const Monitor: React.FC = () => {
   };
 
   const cerrarSesion = () => {
-    localStorage.removeItem('sigep_token');
-    localStorage.removeItem('sigep_userdata');
-    localStorage.removeItem('sigep_auth');
-    localStorage.removeItem('sigep_role');
-    localStorage.removeItem('sigep_username');
-    // Redirección corregida hacia el login móvil
+    logout();
     window.location.href = '/app/login'; 
   };
 
@@ -166,14 +176,22 @@ const Monitor: React.FC = () => {
 
   return (
     <IonPage style={{ background: '#ffffff', display: 'block', height: '100vh', width: '100vw', position: 'relative' }}>
-      <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '70px', background: '#ffffff', boxShadow: '0px 2px 10px rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', padding: '0 15px', zIndex: 9999 }}>
-        <IonButton fill="clear" onClick={() => setShowProfileModal(true)} style={{ height: '50px', margin: 0, padding: 0, marginRight: '10px' }}>
-          <img src="/assets/logo_municipalidad.png" alt="Logo Santo Domingo" style={{ height: '40px', objectFit: 'contain' }} />
-        </IonButton>
-        <div>
-          <h1 style={{ margin: 0, fontSize: '18px', fontWeight: 'bold', color: '#003366' }}>SIGEP Táctico</h1>
-          <p style={{ margin: 0, fontSize: '11px', color: '#666666', fontWeight: '500' }}>Central Móvil de Patrullaje</p>
+      <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '70px', background: '#ffffff', boxShadow: '0px 2px 10px rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 15px', zIndex: 9999 }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <IonButton fill="clear" style={{ height: '50px', margin: 0, padding: 0, marginRight: '10px', pointerEvents: 'none' }}>
+            <img src="/assets/logo_municipalidad.png" alt="Logo Santo Domingo" style={{ height: '40px', objectFit: 'contain' }} />
+          </IonButton>
+          <div>
+            <h1 style={{ margin: 0, fontSize: '18px', fontWeight: 'bold', color: '#003366' }}>SIGEP Táctico</h1>
+            <p style={{ margin: 0, fontSize: '11px', color: '#666666', fontWeight: '500' }}>Central Móvil de Patrullaje</p>
+          </div>
         </div>
+        <button 
+          onClick={() => setShowProfileModal(true)} 
+          style={{ background: '#003366', color: '#fff', border: 'none', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+        >
+          <IonIcon icon={personOutline} style={{ fontSize: '20px' }} />
+        </button>
       </div>
 
       <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, zIndex: 1, paddingTop: '70px' }}>
@@ -218,7 +236,7 @@ const Monitor: React.FC = () => {
       </IonFab>
 
       <IonModal isOpen={showProfileModal} onDidDismiss={() => setShowProfileModal(false)} initialBreakpoint={0.75} breakpoints={[0, 0.75, 1]} style={{ zIndex: 2000 }}>
-        <div style={{ padding: '20px', background: '#ffffff', height: '100%', color: '#111111', fontFamily: 'system-ui, sans-serif' }}>
+        <div style={{ padding: '20px', background: '#ffffff', height: '100%', color: '#111111', fontFamily: 'system-ui, sans-serif', overflowY: 'auto' }}>
           
           <IonSegment value={segmentoPerfil} onIonChange={e => setSegmentoPerfil(e.detail.value as 'datos' | 'patrullas')} style={{ marginBottom: '20px' }}>
             <IonSegmentButton value="datos"><IonLabel>Mis Datos</IonLabel></IonSegmentButton>
@@ -228,10 +246,36 @@ const Monitor: React.FC = () => {
           {segmentoPerfil === 'datos' && (
             <div style={{ textAlign: 'center' }}>
               <IonIcon icon={personCircle} style={{ fontSize: '80px', color: '#003366' }} />
-              <h2 style={{ margin: '10px 0 5px 0', fontWeight: 'bold', color: '#003366' }}>{usuarioActivo.nombre}</h2>
-              <p style={{ margin: 0, color: '#666666', fontSize: '14px' }}>{usuarioActivo.rol}</p>
-              <p style={{ margin: '5px 0 0 0', color: '#888888', fontSize: '13px' }}>{usuarioActivo.correo}</p>
-              <hr style={{ border: '1px solid #f0f0f0', margin: '30px 0' }} />
+              <h2 style={{ margin: '10px 0 5px 0', fontWeight: 'bold', color: '#003366' }}>{user?.nombre_completo || 'Usuario SIGEP'}</h2>
+              <p style={{ margin: 0, color: '#666666', fontSize: '14px' }}>{user?.rol || 'Patrullero'}</p>
+              
+              <div style={{ marginTop: '25px', textAlign: 'left', background: '#f5f7fa', padding: '15px', borderRadius: '12px' }}>
+                <h3 style={{ fontSize: '16px', fontWeight: 'bold', color: '#003366', marginBottom: '15px', marginTop: 0 }}>Información Detallada</h3>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+                  <div>
+                    <span style={{ fontSize: '11px', color: '#666', textTransform: 'uppercase', fontWeight: 'bold' }}>RUT</span>
+                    <p style={{ margin: '2px 0 0', fontSize: '14px', color: '#333' }}>{user?.rut || 'No especificado'}</p>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: '11px', color: '#666', textTransform: 'uppercase', fontWeight: 'bold' }}>Teléfono</span>
+                    <p style={{ margin: '2px 0 0', fontSize: '14px', color: '#333' }}>{user?.telefono || 'No especificado'}</p>
+                  </div>
+                  <div style={{ gridColumn: 'span 2' }}>
+                    <span style={{ fontSize: '11px', color: '#666', textTransform: 'uppercase', fontWeight: 'bold' }}>Correo</span>
+                    <p style={{ margin: '2px 0 0', fontSize: '14px', color: '#333', wordBreak: 'break-all' }}>{user?.correo || 'No especificado'}</p>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: '11px', color: '#666', textTransform: 'uppercase', fontWeight: 'bold' }}>Región</span>
+                    <p style={{ margin: '2px 0 0', fontSize: '14px', color: '#333' }}>{user?.region || 'No especificada'}</p>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: '11px', color: '#666', textTransform: 'uppercase', fontWeight: 'bold' }}>Comuna</span>
+                    <p style={{ margin: '2px 0 0', fontSize: '14px', color: '#333' }}>{user?.comuna || 'No especificada'}</p>
+                  </div>
+                </div>
+              </div>
+
+              <hr style={{ border: '1px solid #f0f0f0', margin: '25px 0' }} />
               <IonButton expand="block" color="danger" fill="outline" onClick={cerrarSesion} style={{ fontWeight: 'bold' }}>
                 <IonIcon slot="start" icon={logOut} /> Cerrar Sesion Segura
               </IonButton>
@@ -268,6 +312,15 @@ const Monitor: React.FC = () => {
           <div style={{ marginTop: '30px' }}><IonButton expand="block" onClick={enviarReporteAlBackend} disabled={!tipoIncidente || !gravedad} style={{ '--background': '#2dd36f', color: '#ffffff', fontWeight: 'bold', height: '50px', '--border-radius': '10px' }}><IonIcon slot="start" icon={send} /> Enviar Reporte</IonButton></div>
         </div>
       </IonModal>
+
+      <IonToast
+        isOpen={showToast}
+        onDidDismiss={() => setShowToast(false)}
+        message={toastMessage}
+        duration={3000}
+        color={toastColor}
+        position="bottom"
+      />
     </IonPage>
   );
 };

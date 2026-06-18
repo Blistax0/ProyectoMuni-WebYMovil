@@ -36,16 +36,17 @@ const Login: React.FC = () => {
       const role = usuario.rol; // ADMIN o PATRULLERO
       const userName = usuario.nombre_completo; // Obtenemos el nombre
 
-      // Pasamos los datos al contexto global
-      login(token, role, userName, usuario);
-
       // REDIRECCIÓN CONDICIONAL SEGÚN ROL 
       if (role === 'ADMIN') {
+        // Pasamos los datos al contexto global solo si es ADMIN
+        login(token, role, userName, usuario);
         router.push('/dashboard', 'forward', 'push'); // Panel Web Administrativo
       } else if (role === 'PATRULLERO') {
-        router.push('/monitor', 'forward', 'push');   // Vista Móvil operativa
+        setErrorMessage('Acceso denegado: Debes ser Administrador para acceder a la plataforma web.');
+        setShowToast(true);
       } else {
         // Por si existe otro rol por defecto
+        login(token, role, userName, usuario);
         router.push('/dashboard', 'forward', 'push');
       }
     } catch (error: any) {

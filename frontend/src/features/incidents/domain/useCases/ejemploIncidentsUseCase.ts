@@ -23,4 +23,13 @@ export class IncidentsUseCase {
     
     return await this.repository.updateIncidentStatus(id, status, token);
   }
+
+  // Acción: Crear un nuevo incidente desde el monitor móvil
+  async executeCreateIncident(data: Omit<Incident, 'id' | 'createdAt' | 'estado_resolucion'>, token: string): Promise<Incident> {
+    if (!token) throw new Error("Token de autenticación no proporcionado");
+    if (!data.tipo_incidente || !data.nivel_gravedad || !data.descripcion) {
+      throw new Error("Faltan datos requeridos para el incidente");
+    }
+    return await this.repository.createIncident(data, token);
+  }
 }

@@ -35,12 +35,23 @@ const IncidentManagementPage: React.FC = () => {
 
   const token = localStorage.getItem('sigep_token') || '';
 
-  const loadIncidents = async () => {
+  const loadIncidents = async (showLoading = true) => {
     try {
-      setLoading(true);
+      if (showLoading) setLoading(true);
       if (token) {
         const data = await incidentsUseCase.executeGetIncidents(token);
-        setIncidents(data);
+        if (data && data.length > 0) {
+          // Ordenar por más recientes
+          const sortedData = data.sort((a, b) => b.id - a.id);
+          setIncidents(sortedData);
+        } else {
+          // Fallback a mock data para mantener coherencia con las alertas del Dashboard
+          setIncidents([
+            { id: 1, tipo_incidente: 'Consumo de Alcohol', nivel_gravedad: 'Baja', latitud: -33.640424, longitud: -71.629345, descripcion: 'Plaza de las Flores', estado_resolucion: 'PENDIENTE', patrullero_id: 1, createdAt: '', updatedAt: '' },
+            { id: 2, tipo_incidente: 'Grupo Sospechoso', nivel_gravedad: 'Media', latitud: -33.645471, longitud: -71.630812, descripcion: 'Las Violetas', estado_resolucion: 'PENDIENTE', patrullero_id: 1, createdAt: '', updatedAt: '' },
+            { id: 3, tipo_incidente: 'Asalto', nivel_gravedad: 'Alta', latitud: -33.636308, longitud: -71.631518, descripcion: 'Marbella', estado_resolucion: 'PENDIENTE', patrullero_id: 1, createdAt: '', updatedAt: '' }
+          ]);
+        }
       } else {
         console.error('No se encontró el token de administrador.');
       }
@@ -52,7 +63,13 @@ const IncidentManagementPage: React.FC = () => {
   };
 
   useEffect(() => {
-    loadIncidents();
+    loadIncidents(true);
+    // Polling cada 5 segundos sin mostrar el spinner para no ser molesto
+    const intervalId = setInterval(() => {
+      loadIncidents(false);
+    }, 5000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   const handleStatusChange = async (id: number, newStatus: any) => {

@@ -24,8 +24,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   // 2. Si la ruta pide roles específicos y el usuario no lo tiene, lo rebotamos
   if (allowedRoles && role && !allowedRoles.includes(role)) {
-    // Si es patrullero y trata de entrar a algo de admin, lo mandamos a incidentes (o viceversa)
-    return <Redirect to={role === 'PATRULLERO' ? '/incidents' : '/dashboard'} />; 
+    // Si es patrullero y trata de entrar a algo de admin, lo mandamos a /monitor
+    return <Redirect to={role === 'PATRULLERO' ? '/monitor' : '/dashboard'} />; 
   }
 
   // 3. Si todo está en orden, renderiza los hijos

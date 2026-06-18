@@ -77,25 +77,25 @@ const App: React.FC = () => (
             </Route>
 
             <Route exact path="/dashboard">
-              <ProtectedRoute allowedRoles={['ADMIN', 'PATRULLERO']}>
+              <ProtectedRoute allowedRoles={['ADMIN']}>
                 <Dashboard />
               </ProtectedRoute>
             </Route>
 
             <Route exact path="/geofencing">
-              <ProtectedRoute allowedRoles={['ADMIN', 'PATRULLERO']}>
+              <ProtectedRoute allowedRoles={['ADMIN']}>
                 <GeoFencingPage />
               </ProtectedRoute>
             </Route>
 
             <Route exact path="/history">
-              <ProtectedRoute allowedRoles={['ADMIN', 'PATRULLERO']}>
+              <ProtectedRoute allowedRoles={['ADMIN']}>
                 <RouteHistoryPage />
               </ProtectedRoute>
             </Route>
 
             <Route exact path="/incidents">
-              <ProtectedRoute allowedRoles={['ADMIN', 'PATRULLERO']}>
+              <ProtectedRoute allowedRoles={['ADMIN']}>
                 <IncidentManagementPage />
               </ProtectedRoute>
             </Route>

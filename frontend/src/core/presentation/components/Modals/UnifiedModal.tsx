@@ -26,9 +26,10 @@ interface UnifiedModalProps {
   isOpen: boolean;
   onClose: () => void;
   data: ModalAlertData | null;
+  onSecondaryAction?: () => void;
 }
 
-const UnifiedModal: React.FC<UnifiedModalProps> = ({ isOpen, onClose, data }) => {
+const UnifiedModal: React.FC<UnifiedModalProps> = ({ isOpen, onClose, data, onSecondaryAction }) => {
   if (!isOpen || !data) return null;
 
   const getHeaderColor = () => {
@@ -117,7 +118,7 @@ const UnifiedModal: React.FC<UnifiedModalProps> = ({ isOpen, onClose, data }) =>
               text={data.secondaryAction || 'GESTIONAR CASO'} 
               variant="primary" 
               size="medium"
-              onClick={onClose}
+              onClick={onSecondaryAction || onClose}
             />
           </div>
         </div>
