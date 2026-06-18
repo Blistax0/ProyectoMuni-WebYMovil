@@ -4,7 +4,7 @@ import {
   IonContent, 
   useIonRouter
 } from '@ionic/react';
-import axios from 'axios';
+import API from '../../../../../core/config/axios';
 
 const LoginMovil: React.FC = () => {
   const [correo, setCorreo] = useState<string>('');
@@ -18,7 +18,7 @@ const LoginMovil: React.FC = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/login', {
+      const response = await API.post('/auth/login', {
         correo: correo,
         password: contrasena
       });

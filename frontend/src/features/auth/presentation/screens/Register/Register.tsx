@@ -59,7 +59,7 @@ const Register: React.FC = () => {
         rol: 'PATRULLERO' 
       };
 
-      await API.post('/usuarios', payload);
+      await API.post('/auth/register', payload);
       
       showNotification('¡Cuenta creada exitosamente! Ahora puedes iniciar sesión.', 'success');
       

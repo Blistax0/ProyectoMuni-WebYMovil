@@ -8,7 +8,7 @@ export const axiosAuthRepository: AuthRepository = {
         return response.data;
     },
     register: async (datos: any) => {
-        const response = await API.post('/usuarios', datos);
+        const response = await API.post('/auth/register', datos);
         return response.data;
     }
 };

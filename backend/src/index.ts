@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
 require('dotenv').config();
 
 import { sequelize, testConnection  } from './core/database/database';
@@ -11,7 +12,13 @@ import Incidente from './features/incidentes/data/Incidente';
 import PosicionGPS from './features/posiciones/data/PosicionGPS';
 
 const app = express();
-app.use(cors());
+app.use(helmet());
+app.use(cors({
+    origin: ['http://localhost:8100', 'http://localhost:5173', 'capacitor://localhost', 'http://localhost'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+}));
 app.use(express.json());
 
 // Probar conexión a la base de datos

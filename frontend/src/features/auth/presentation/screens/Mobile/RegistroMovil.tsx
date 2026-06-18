@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IonPage, IonContent, useIonRouter, IonToast } from '@ionic/react';
-import axios from 'axios';
+import API from '../../../../../core/config/axios';
 
 const RegistroMovil: React.FC = () => {
   const router = useIonRouter();
@@ -52,7 +52,7 @@ const RegistroMovil: React.FC = () => {
         rol: 'PATRULLERO'
       };
 
-      await axios.post('http://localhost:3000/api/usuarios', payload);
+      await API.post('/auth/register', payload);
       
       showNotification('Cuenta operativa creada con exito. Redirigiendo al inicio de sesion.', 'success');
       
