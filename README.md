@@ -248,9 +248,9 @@ Se detalla los endpoints expuestos por el backend para el correcto consumo desde
 
 ---
 
-## 1. Módulo de Incidentes
+### 1. Módulo de Incidentes
 
-### A. Registrar nuevo incidente
+#### A. Registrar nuevo incidente
 
 - **Ruta:** `/incidentes`
 - **Método:** `POST`
@@ -273,7 +273,7 @@ Se detalla los endpoints expuestos por el backend para el correcto consumo desde
 
 ---
 
-### B. Listar todos los incidentes
+#### B. Listar todos los incidentes
 
 - **Ruta:** `/incidentes`
 - **Método:** `GET`
@@ -300,7 +300,7 @@ Se detalla los endpoints expuestos por el backend para el correcto consumo desde
 
 ---
 
-### C. Actualizar estado de un incidente
+#### C. Actualizar estado de un incidente
 
 - **Ruta:** `/incidentes/:id`
 - **Método:** `PUT`
@@ -309,7 +309,7 @@ Se detalla los endpoints expuestos por el backend para el correcto consumo desde
 
 ---
 
-### D. Eliminar o archivar un incidente
+#### D. Eliminar o archivar un incidente
 
 - **Ruta:** `/incidentes/:id`
 - **Método:** `DELETE`
@@ -317,9 +317,9 @@ Se detalla los endpoints expuestos por el backend para el correcto consumo desde
 
 ---
 
-## 2. Módulo de Geocercas
+### 2. Módulo de Geocercas
 
-### A. Crear zona de vigilancia
+#### A. Crear zona de vigilancia
 
 - **Ruta:** `/geocercas`
 - **Método:** `POST`
@@ -340,7 +340,7 @@ Se detalla los endpoints expuestos por el backend para el correcto consumo desde
 
 ---
 
-### B. Listar geocercas
+#### B. Listar geocercas
 
 - **Ruta:** `/geocercas`
 - **Método:** `GET`
@@ -348,7 +348,7 @@ Se detalla los endpoints expuestos por el backend para el correcto consumo desde
 
 ---
 
-### C. Modificar perímetro de geocerca
+#### C. Modificar perímetro de geocerca
 
 - **Ruta:** `/geocercas/:id`
 - **Método:** `PUT`
@@ -363,7 +363,7 @@ Se detalla los endpoints expuestos por el backend para el correcto consumo desde
 }
 ```
 
-### D. Eliminar geocerca
+#### D. Eliminar geocerca
 
 - **Ruta:** `/geocercas/:id`
 - **Método:** `DELETE`
@@ -371,9 +371,9 @@ Se detalla los endpoints expuestos por el backend para el correcto consumo desde
 
 ---
 
-## 3. Módulo de Usuarios
+### 3. Módulo de Usuarios
 
-### A. Gestión de Usuarios y Accesos
+#### A. Gestión de Usuarios y Accesos
 
 - **Rutas disponibles:**
   - `GET /`: Endpoints dedicados para listar de forma ordenada a todos los patrulleros que se encuentran activos en el sistema municipal.
@@ -383,16 +383,18 @@ Se detalla los endpoints expuestos por el backend para el correcto consumo desde
 
 ---
 
-## 4. Módulo de Posiciones GPS
+### 4. Módulo de Posiciones GPS
 
-### A. Envío de ubicación en tiempo real
+#### A. Envío de ubicación en tiempo real
 
 - **Rutas disponibles:**
   - `POST /`: Recibe de forma continua y asíncrona las coordenadas geográficas (latitud, longitud, velocidad estimada en km/h y el ID del patrullero) enviadas directamente por el dispositivo móvil del operario que se encuentra en ruta activa.
 
 ---
 
-## 6. Arquitectura del Software (Clean Architecture)
+## Entrega Final: Frontend, UI/UX y Requerimientos
+
+### Arquitectura del Software (Clean Architecture)
 
 Se ha refactorizado el proyecto completo para cumplir con los estándares de Clean Architecture, tal como en el repositorio guia. (No se que mas poner :p)
 
