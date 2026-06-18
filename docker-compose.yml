@@ -38,6 +38,8 @@ services:
       - CLOUDINARY_CLOUD_NAME=dgbe3ukar
       - CLOUDINARY_API_KEY=766596764588812
       - CLOUDINARY_API_SECRET=rWmZnkTS6er3FEjhGlszMPXjBFE
+      - JWT_SECRET=super_secreto_sigep_2026
+
 
   # Frontend 
   web-frontend:
