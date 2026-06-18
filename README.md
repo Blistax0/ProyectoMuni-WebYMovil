@@ -50,6 +50,25 @@ Para desplegar el entorno de desarrollo y visualizar la aplicación navegable, s
    http://localhost:8100
    ```
 
+### Despliegue Automatizado con Docker (Recomendado)
+
+Para levantar todo el entorno de forma rápida y sin configurar servicios a mano, puedes usar Docker Compose. Esto levantará la base de datos MySQL, el backend y el frontend automáticamente y ya conectados entre sí.
+
+1. **Asegúrate de tener Docker instalado** en tu computadora.
+2. **Abre tu terminal** en la carpeta principal del proyecto (justo donde está el archivo `docker-compose.yml`).
+3. **Ejecuta el siguiente comando:**
+
+   ```bash
+   docker-compose up -d --build
+   ```
+
+   _(El flag `--build` asegura que se construyan las imágenes más recientes, y `-d` hace que todo corra en segundo plano sin bloquear tu consola)._
+
+4. **Accede a los servicios:**
+   - **Frontend Web:** [http://localhost:8080](http://localhost:8080)
+   - **Backend API:** [http://localhost:3000](http://localhost:3000)
+   - **Base de Datos MySQL:** expuesta en el puerto `3306` localmente.
+
 ---
 
 ## 3. Entrega Parcial 1: Frontend, UI/UX y Requerimientos (EP1.X)
@@ -411,3 +430,14 @@ Tanto el Frontend como el Backend están divididos por Features (Dominios de neg
 - **presentation/ (Capa de Presentación):** La capa de visualización e interacción.
   - En el Backend: Son los Controladores de Express, quienes simplemente reciben el `req.body`, inyectan el repositorio de Sequelize en el Caso de Uso, y retornan el `res.json`.
   - En el Frontend: Son las pantallas de React/Ionic y componentes de UI que ejecutan los Casos de Uso para reaccionar a las interacciones del usuario.
+
+---
+
+## 7. Medidas de Seguridad y Autenticación
+
+La seguridad es un pilar fundamental en el sistema SIGEP, ya que el sistema maneja datos sensibles de patrullaje y reportes en tiempo real. Para garantizar que la plataforma sea robusta frente a intentos de ataque, aplicamos las siguientes defensas:
+
+- **Protección contra XSS (Helmet):** El backend utiliza la librería `helmet` de Node.js. Con esto, configuramos automáticamente cabeceras HTTP de seguridad que le indican al navegador cómo debe comportarse, bloqueando inyecciones de scripts maliciosos y previniendo ataques de tipo Cross-Site Scripting (XSS).
+- **Control de Accesos (CORS Estricto):** En lugar de dejar la API abierta al mundo, implementamos un CORS muy estricto. El backend únicamente acepta peticiones que provengan de nuestros orígenes oficiales (como el localhost del frontend web o la app móvil compilada con Capacitor). Si una página web externa o desconocida intenta consumir nuestros datos, el servidor rechazará la solicitud de inmediato.
+- **Criptografía de Contraseñas (Bcrypt):** Jamás guardamos una contraseña en texto plano. Cada vez que un usuario se registra o actualiza su clave, utilizamos el algoritmo `bcrypt` para aplicar un "hash" seguro antes de guardar en MySQL. De este modo, incluso ante una filtración de base de datos, las claves reales de patrulleros y administradores permanecen completamente ilegibles.
+- **Autenticación Centralizada (JWT):** Para el flujo Full-Stack, el frontend no maneja el token JWT de forma desordenada. Configuramos un "Interceptor" global de Axios que atrapa cada petición que sale de la aplicación e inyecta la cabecera de Autorización (`Bearer`) automáticamente. Esto centraliza la seguridad y evita errores humanos al momento de consultar rutas privadas.
