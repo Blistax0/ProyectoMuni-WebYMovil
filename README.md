@@ -238,11 +238,9 @@ El sistema utiliza MySQL como motor relacional, administrado a través del ORM S
 
 ---
 
-5.3 Documentación Técnica de Consumo de API (EP 2.3 y EP 2.7)
+### 5.3 Documentación Técnica de Consumo de API (EP 2.3 y EP 2.7)
 
-# Documentación Técnica de Consumo de API (SIGEP)
-
-Este documento detalla los endpoints expuestos por el backend para el correcto consumo desde el frontend (Ionic + React).
+Se detalla los endpoints expuestos por el backend para el correcto consumo desde el frontend (Ionic + React).
 
 ## Base URL
 
