@@ -415,7 +415,7 @@ Se detalla los endpoints expuestos por el backend para el correcto consumo desde
 
 ### Arquitectura del Software (Clean Architecture)
 
-Se ha refactorizado el proyecto completo para cumplir con los estándares de Clean Architecture, tal como en el repositorio guia. (No se que mas poner :p)
+Este enfoque de capas garantiza que la lógica de negocio esté completamente aislada de las herramientas tecnológicas. Por ejemplo, al implementar el ORM Sequelize en la Capa de Datos, no solo abstraemos las consultas a MySQL, sino que el sistema automáticamente parametriza todas las entradas, brindándonos una protección nativa y robusta contra ataques de Inyección SQL.
 
 ### Estructura de Capas por Feature
 
