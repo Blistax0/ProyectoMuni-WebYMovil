@@ -86,11 +86,11 @@ Se han definido 7 requerimientos críticos bajo estándares de prevención situa
 | Requerimiento                                    | Especificación y Justificación Operativa                                                                                                                                                        |
 | :----------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Registro de Incidentes Georreferenciados**     | Captura de evidencia multimedia vinculada automáticamente a coordenadas GPS exactas. Elimina la ambigüedad en los reportes manuales.                                                            |
-| **Monitoreo de Flota en Tiempo Real**            | Visualización mediante un **Dashboard (Panel de Control Visual)** que consolida la ubicación y estado de las unidades en una sola pantalla, fundamental para despachar la patrulla más cercana. |
+| **Monitoreo de Flota en Tiempo Real**            | Visualización mediante un **Dashboard (Panel de Control Visual)** que se actualiza automáticamente en vivo, consolidando la ubicación de patrullas y las alertas activas en una sola pantalla.  |
 | **Gestión de Geo-cercas (Perímetros Virtuales)** | Capacidad del administrador para dibujar polígonos virtuales sobre el mapa digital, estableciendo límites de vigilancia estrictos para áreas residenciales y costeras.                          |
 | **Alertas Operativas Automáticas**               | Notificaciones push inmediatas enviadas al sistema cuando un vehículo excede el límite de velocidad o abandona su perímetro (geo-cerca) asignado.                                               |
 | **Historial y Reproducción de Rutas**            | Sistema de **Auditoría (Registro histórico inmutable)** que guarda los trayectos pasados para evaluar la efectividad del servicio y transparentar el uso de recursos.                           |
-| **Protocolo de Emergencia (Botón de Pánico)**    | Interfaz de un solo toque en la app móvil que envía una alerta sonora y de ubicación inmediata a la central para proteger la integridad del patrullero.                                         |
+| **Protocolo de Emergencia (Botón de Pánico)**    | Botón de acceso rápido en la app móvil que genera un reporte de gravedad ALTA directo en el sistema de incidentes, el cual aparece al instante en la central para proteger al patrullero.       |
 | **Trazabilidad y Derivación de Casos**           | Seguimiento del estado del incidente (Pendiente, En Proceso, Resuelto), facilitando la derivación a otros departamentos municipales (ej: luminarias o aseo).                                    |
 
 #### Requerimientos No Funcionales (RNF)
@@ -148,8 +148,8 @@ La arquitectura de navegación sigue un modelo de árbol con protección de ruta
 
 **Nivel 0: Rutas Públicas (autenticación):**
 
-- `/login` (Web y Móvil): Pantalla de ingreso. Es el punto de entrada obligatorio.
-- `/register` (Web y Móvil): Flujo de dos pasos (Datos Generales y Seguridad).
+- `/login` (Web) y `/app/login` (Móvil): Pantallas de ingreso adaptadas. Es el punto de entrada obligatorio.
+- `/register` (Web) y `/app/register` (Móvil): Formulario único y rápido para la creación de cuentas de personal operativo.
 
 **Nivel 1: Rutas Privadas Principales (Dashboard Web):**
 
@@ -180,8 +180,8 @@ Se definen los siguientes flujos críticos de interacción en la plataforma Web:
 
 **Task Flow 1: Trazado de Geo-cercas:**
 
-- Flujo: Usuario entra a "Geo-cercas" -> Clic en "+ Trazar Nuevo Perímetro" -> Aparece la barra de herramientas espaciales -> El usuario dibuja el polígono -> El polígono se guarda y la patrulla queda asignada.
-- Punto Crítico: El cambio de estado del botón principal (de "Trazar" a "Cancelar" en color naranja), otorgando control al usuario para abortar la acción.
+- Flujo: Usuario entra a "Geo-cercas" -> Clic en "+ Trazar Nuevo Perímetro" -> Dibuja el polígono en el mapa -> Selecciona el color de la zona desde el menú desplegable (Azul, Rojo o Verde) -> Escribe el nombre en el panel derecho -> Hace clic en "Guardar Perímetro".
+- Punto Crítico: La interacción fluida. El usuario no depende de ventanas emergentes (prompts) externas del navegador, manteniendo todo el control y contexto visual directamente en el mapa y panel lateral.
 
 **Task Flow 2: Reproducción de Historial:**
 
